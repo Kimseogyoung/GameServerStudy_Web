@@ -1,0 +1,6 @@
+@WebStudy_HostAddress = http://localhost:5157
+
+GET {{WebStudy_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
