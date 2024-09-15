@@ -7,7 +7,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.yaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.yaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Config\" />
+    <Folder Include="Model\" />
+    <Folder Include="Base\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Protocol\Protocol.csproj" />
+    <ProjectReference Include="..\Proto\Proto.csproj" />
+    <ProjectReference Include="..\WebFramework\WebFramework.csproj" />
   </ItemGroup>
 
 </Project>
