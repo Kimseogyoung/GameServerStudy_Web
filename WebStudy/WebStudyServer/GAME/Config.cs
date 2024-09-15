@@ -1,5 +1,6 @@
 ﻿using System.Net.Sockets;
 using System.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebStudy
 { 
@@ -9,13 +10,16 @@ namespace WebStudy
         public static string ServerIp { get; private set; } = string.Empty;
         public static string EnvName { get; private set; } = string.Empty;
         public static bool UseSwagger { get; private set; }
-
+        public static MySqlServerVersion DbVersion { get; private set; }
         public static void Init(IConfiguration config, IHostEnvironment environ)
         {
             ServerIp = GetServerIp();
             EnvName = environ.EnvironmentName;
 
             UseSwagger = config.GetValue("UseSwagger", false);
+
+            // 이거 지금 동작안되니까 yaml parser 수저ㅏㅇ
+            DbVersion = new MySqlServerVersion(config.GetValue("Db:Version", "0.0.0"));
         }
 
         private static string GetServerIp()
