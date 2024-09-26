@@ -36,7 +36,7 @@ namespace WebFramework.Config
                 s.Path = path;
                 s.Optional = optional;
                 s.ReloadOnChange = reloadOnChange;
-                s.ResolveFileProvider();
+               // s.ResolveFileProvider();
             });
         }
 

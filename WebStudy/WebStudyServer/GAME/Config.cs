@@ -18,7 +18,6 @@ namespace WebStudy
 
             UseSwagger = config.GetValue("UseSwagger", false);
 
-            // 이거 지금 동작안되니까 yaml parser 수저ㅏㅇ
             DbVersion = new MySqlServerVersion(config.GetValue("Db:Version", "0.0.0"));
         }
 

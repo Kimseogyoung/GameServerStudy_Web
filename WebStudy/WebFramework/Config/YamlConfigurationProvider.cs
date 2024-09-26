@@ -21,8 +21,14 @@ namespace WebFramework.Config
         public override void Load(Stream stream)
         {
 
-            Data = YamlConfigurationFileParser.Parse(stream);
-
+            var data = YamlConfigurationFileParser.Parse(stream);
+            foreach(var (key, value) in data)
+            {
+                if (!Data.TryAdd(key, value))
+                {
+                    Data[key] = value;
+                }
+            }
         }
     }
 }

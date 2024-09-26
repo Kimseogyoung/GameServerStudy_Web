@@ -10,7 +10,7 @@ namespace WebStudy
 
             builder.Configuration
              .SetBasePath(workPath)
-             .AddYamlFile("appsettings.yaml", optional: false)      
+             .AddYamlFile("appsettings.yaml", optional: false)
              .AddYamlFile($"appsettings.{builder.Environment.EnvironmentName}.yaml", optional: true)
              .AddEnvironmentVariables();
 

@@ -1,3 +1,4 @@
 UseSwagger: true
+asb: true
 Db:
     Version: 8.0.21

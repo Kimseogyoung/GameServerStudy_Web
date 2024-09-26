@@ -19,7 +19,6 @@ namespace WebFramework.Config
             var serializer = new Serializer();
             var yamlObject = serializer.Deserialize<Dictionary<string, object>>(new StreamReader(input));
 
-            _data.Clear();
             if (yamlObject != null)
             {
                 ParseYaml(yamlObject);
@@ -38,11 +37,25 @@ namespace WebFramework.Config
             }
         }
 
+        private void ParseYaml(IDictionary<object, object> yamlDict)
+        {
+            foreach (var kvp in yamlDict)
+            {
+                EnterContext(kvp.Key.ToString());
+                ParseValue(kvp.Value);
+                ExitContext();
+            }
+        }
+
         private void ParseValue(object? value)
         {
             if (value is IDictionary<string, object> dict)
             {
                 ParseYaml(dict);
+            }
+            else if(value is IDictionary<object, object> dict2)
+            {
+                ParseYaml(dict2);
             }
             else if (value is IList list)
             {
