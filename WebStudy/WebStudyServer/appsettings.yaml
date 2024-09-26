@@ -2,3 +2,4 @@ UseSwagger: true
 asb: true
 Db:
     Version: 8.0.21
+    UserDb: Server=localhost:3306;Database=TestDb;Uid=root;Pwd=tjrudElql!;

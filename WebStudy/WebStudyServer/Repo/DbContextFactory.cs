@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using System.Reflection;
+using WebStudy;
 using WebStudy.Service.Singleton;
 using WebStudyServer.Base;
 
@@ -17,7 +18,7 @@ namespace WebStudyServer
         public DbContextFactory(Action<DbContextOptionsBuilder<TContext>, string> action, ILogger<DbContextFactory<TContext>> logger)
              : base(1, true, 10, TimeSpan.FromDays(1), TimeSpan.FromDays(1), logger) 
         {
-            _dbConnectStrArr = new string[1] { "dd" };
+            _dbConnectStrArr = new string[1] { CONFIG.UserDbConnStr };
             _optionBuilderAction = action;
         }
 

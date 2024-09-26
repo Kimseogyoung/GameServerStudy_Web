@@ -10,7 +10,8 @@ namespace WebStudy
         public static string ServerIp { get; private set; } = string.Empty;
         public static string EnvName { get; private set; } = string.Empty;
         public static bool UseSwagger { get; private set; }
-        public static MySqlServerVersion DbVersion { get; private set; }
+        public static MySqlServerVersion? DbVersion { get; private set; }
+        public static string UserDbConnStr { get; private set; }
         public static void Init(IConfiguration config, IHostEnvironment environ)
         {
             ServerIp = GetServerIp();
@@ -19,6 +20,7 @@ namespace WebStudy
             UseSwagger = config.GetValue("UseSwagger", false);
 
             DbVersion = new MySqlServerVersion(config.GetValue("Db:Version", "0.0.0"));
+            UserDbConnStr = config.GetValue<string>("Db:UserDb", "") ?? "";
         }
 
         private static string GetServerIp()
