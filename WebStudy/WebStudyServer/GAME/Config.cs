@@ -1,8 +1,9 @@
 ﻿using System.Net.Sockets;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
+using WebStudyServer.StartUp;
 
-namespace WebStudy
+namespace WebStudyServer
 { 
     public static class CONFIG
     {
@@ -11,7 +12,7 @@ namespace WebStudy
         public static string EnvName { get; private set; } = string.Empty;
         public static bool UseSwagger { get; private set; }
         public static MySqlServerVersion? DbVersion { get; private set; }
-        public static string UserDbConnStr { get; private set; }
+        public static List<string> UserDbConnectionStrList { get; private set; } = new();
         public static void Init(IConfiguration config, IHostEnvironment environ)
         {
             ServerIp = GetServerIp();
@@ -20,7 +21,7 @@ namespace WebStudy
             UseSwagger = config.GetValue("UseSwagger", false);
 
             DbVersion = new MySqlServerVersion(config.GetValue("Db:Version", "0.0.0"));
-            UserDbConnStr = config.GetValue<string>("Db:UserDb", "") ?? "";
+            UserDbConnectionStrList = config.GetValueStringList("Db:UserDb:ConnectionStrList");
         }
 
         private static string GetServerIp()

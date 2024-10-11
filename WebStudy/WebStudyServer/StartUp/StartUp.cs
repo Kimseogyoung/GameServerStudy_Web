@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using System.Net;
 
-namespace WebStudy
+namespace WebStudyServer
 {
     public partial class Startup
     {

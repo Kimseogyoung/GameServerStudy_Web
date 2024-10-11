@@ -1,6 +1,6 @@
 ﻿using WebFramework.Config;
 
-namespace WebStudy
+namespace WebStudyServer
 {
     public partial class Startup
     {

@@ -1,5 +1,6 @@
 ﻿using SharpYaml.Serialization;
 using System.Collections;
+using System.Text.Json;
 
 namespace WebFramework.Config
 {
@@ -59,12 +60,13 @@ namespace WebFramework.Config
             }
             else if (value is IList list)
             {
-                for (var i = 0; i < list.Count; i++)
+                var key = GetContextKey();
+                if (_data.ContainsKey(key))
                 {
-                    EnterContext(i.ToString());
-                    ParseValue(list[i]);
-                    ExitContext();
+                    throw new FormatException($"A duplicate key '{key}' was found.");
                 }
+
+                _data[key] = JsonSerializer.Serialize(list);
             }
             else
             {

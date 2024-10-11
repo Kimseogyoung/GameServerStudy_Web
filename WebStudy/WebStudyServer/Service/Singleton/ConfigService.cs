@@ -1,4 +1,4 @@
-﻿namespace WebStudy.Service.Singleton
+﻿namespace WebStudyServer.Service.Singleton
 {
     public class ConfigService
     {

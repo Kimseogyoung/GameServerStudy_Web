@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace WebStudy.Helper
+namespace WebStudyServer.Helper
 {
     public class ServerTime
     {

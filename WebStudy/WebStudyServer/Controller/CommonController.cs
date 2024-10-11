@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebStudy.Controllers
+namespace WebStudyServer.Controllers
 {
     [ApiController]
     [Route("[controller]")]

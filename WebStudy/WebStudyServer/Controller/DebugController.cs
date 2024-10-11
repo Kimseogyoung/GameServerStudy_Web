@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Protocol;
 
-namespace WebStudy.Controllers
+namespace WebStudyServer.Controllers
 {
     [ApiController]
     [Route("api")]

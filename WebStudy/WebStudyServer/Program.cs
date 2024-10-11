@@ -1,4 +1,4 @@
-using WebStudy;
+using WebStudyServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
