@@ -20,18 +20,28 @@ namespace WebStudyServer
         {
             services.AddMemoryCache();
             AddRepo<UserRepo>(services);
-
-            foreach (var connectionStr in CONFIG.UserDbConnectionStrList)
-            {
-                var excutor = DBSqlExecutor.Create(connectionStr, System.Data.IsolationLevel.ReadCommitted);
-                excutor.Commit();
-            }
+            AddRepo<AuthRepo>(services);
         }
 
         private void AddRepo<TRepo>(IServiceCollection services) where TRepo : RepoBase
         {
             using var serviceProvider = services.BuildServiceProvider();
             services.AddScoped<TRepo>();
+        }
+
+        private void ConnectionTest()
+        {
+            foreach (var connectionStr in CONFIG.UserDbConnectionStrList)
+            {
+                var excutor = DBSqlExecutor.Create(connectionStr, System.Data.IsolationLevel.ReadCommitted);
+                excutor.Commit();
+            }
+
+            foreach (var connectionStr in CONFIG.AuthDbConnectionStrList)
+            {
+                var excutor = DBSqlExecutor.Create(connectionStr, System.Data.IsolationLevel.ReadCommitted);
+                excutor.Commit();
+            }
         }
     }
 }

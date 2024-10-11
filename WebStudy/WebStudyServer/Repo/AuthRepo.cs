@@ -1,6 +1,9 @@
-﻿namespace WebStudyServer.Repo
+﻿using WebStudyServer.Base;
+
+namespace WebStudyServer.Repo
 {
-    public class AuthRepo
+    public class AuthRepo : RepoBase
     {
+        protected override List<string> DbConnStrList => CONFIG.AuthDbConnectionStrList;
     }
 }

@@ -7,12 +7,12 @@ namespace WebStudyServer
 { 
     public static class CONFIG
     {
-
         public static string ServerIp { get; private set; } = string.Empty;
         public static string EnvName { get; private set; } = string.Empty;
         public static bool UseSwagger { get; private set; }
         public static MySqlServerVersion? DbVersion { get; private set; }
         public static List<string> UserDbConnectionStrList { get; private set; } = new();
+        public static List<string> AuthDbConnectionStrList { get; private set; } = new();
         public static void Init(IConfiguration config, IHostEnvironment environ)
         {
             ServerIp = GetServerIp();
@@ -22,6 +22,7 @@ namespace WebStudyServer
 
             DbVersion = new MySqlServerVersion(config.GetValue("Db:Version", "0.0.0"));
             UserDbConnectionStrList = config.GetValueStringList("Db:UserDb:ConnectionStrList");
+            AuthDbConnectionStrList = config.GetValueStringList("Db:AuthDb:ConnectionStrList");
         }
 
         private static string GetServerIp()
