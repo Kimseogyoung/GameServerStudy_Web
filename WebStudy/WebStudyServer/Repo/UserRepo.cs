@@ -5,7 +5,7 @@ namespace WebStudyServer.Repo
 {
     public class UserRepo : RepoBase
     {
-        protected override List<string> DbConnStrList => CONFIG.UserDbConnectionStrList;
+        protected override List<string> _dbConnStrList => CONFIG.UserDbConnectionStrList;
 
     }
 }
