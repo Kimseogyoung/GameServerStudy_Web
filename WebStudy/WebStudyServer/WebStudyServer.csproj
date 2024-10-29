@@ -26,7 +26,6 @@
   <ItemGroup>
     <Folder Include="Data\Config\" />
     <Folder Include="DbContext\Legacy\" />
-    <Folder Include="Manager\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -22,3 +22,15 @@ TODO
 - Middleware : 요청 정보 로드 및 압축 암호화, 디시리얼라이즈
 - Filter : 로그, 인증, 트랜잭션 등
 - ExceptionHandler : 에러 잡아서 ResultCode로 리턴 
+
+
+----------------------
+- Config
+    - yaml
+- Secret
+    - ...
+- DB
+    - MySql
+    - 형상관리 : liquibase (https://www.liquibase.com/download)
+- Cache
+    - Redis

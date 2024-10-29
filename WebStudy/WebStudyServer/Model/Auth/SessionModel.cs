@@ -10,7 +10,7 @@
 
         public ulong PlayerId { get; set; }
 
-        public long ExpireTime { get; set; }
+        public long ExpireTimestamp { get; set; }
 
         public int State { get; set; }
 

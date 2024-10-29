@@ -1,6 +1,8 @@
 ﻿using Microsoft.OpenApi.Models;
 using System.Net;
+using WebStudyServer.Component;
 using WebStudyServer.Filter;
+using WebStudyServer.Manager;
 
 namespace WebStudyServer
 {
@@ -30,6 +32,7 @@ namespace WebStudyServer
 
         private void AddServices(IServiceCollection services)
         {
+            services.AddScoped<AccountComponent>();
         }
     }
 }
