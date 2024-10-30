@@ -10,7 +10,14 @@ namespace WebStudyServer
 
         public ulong PlayerId { get; private set; }
 
-        public DateTime ReqTime { get; private set; }
+        public string Ip { get; private set; }
+
+        public int ShardId { get; private set; }
+
+        public DateTime ServerTime { get; private set; } = DateTime.UtcNow;
+
+        public DateTime PlayerTime { get; private set; } = DateTime.UtcNow;
+
         public int Seq { get; private set; }
 
 

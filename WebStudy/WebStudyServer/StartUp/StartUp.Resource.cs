@@ -11,6 +11,7 @@ using WebStudyServer;
 using WebStudyServer.Base;
 using WebStudyServer.Repo;
 using WebStudyServer.Repo.Database;
+using WebStudyServer.GAME;
 
 namespace WebStudyServer
 {
@@ -31,13 +32,13 @@ namespace WebStudyServer
 
         private void ConnectionTest()
         {
-            foreach (var connectionStr in CONFIG.UserDbConnectionStrList)
+            foreach (var connectionStr in APP.Cfg.UserDbConnectionStrList)
             {
                 var excutor = DBSqlExecutor.Create(connectionStr, System.Data.IsolationLevel.ReadCommitted);
                 excutor.Commit();
             }
 
-            foreach (var connectionStr in CONFIG.AuthDbConnectionStrList)
+            foreach (var connectionStr in APP.Cfg.AuthDbConnectionStrList)
             {
                 var excutor = DBSqlExecutor.Create(connectionStr, System.Data.IsolationLevel.ReadCommitted);
                 excutor.Commit();

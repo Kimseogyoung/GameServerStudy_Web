@@ -23,4 +23,35 @@ namespace Proto
         NONE = 0,
         LOADED = 1,
     }
+
+    public enum ESessionState
+    {
+        NONE = 0,
+        ACTIVE = 1,
+        EXPIRED = 2
+    }
+
+    public enum EAccountState
+    {
+        NONE = 0,
+        ACTIVE = 1,
+    }
+
+    public enum EChannelState
+    {
+        NONE = 0,
+        ACTIVE = 1
+    }
+
+    public enum EChannelType
+    {
+        NONE = 0,
+        GUEST = 1
+    }
+
+    public enum EDeviceState
+    {
+        NONE = 0,
+        ACTIVE = 1
+    }
 }

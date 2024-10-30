@@ -5,27 +5,31 @@ using WebStudyServer.StartUp;
 
 namespace WebStudyServer
 { 
-    public static class CONFIG
+    public class Config
     {
-        public static string ServerIp { get; private set; } = string.Empty;
-        public static string EnvName { get; private set; } = string.Empty;
-        public static bool UseSwagger { get; private set; }
-        public static MySqlServerVersion? DbVersion { get; private set; }
-        public static List<string> UserDbConnectionStrList { get; private set; } = new();
-        public static List<string> AuthDbConnectionStrList { get; private set; } = new();
-        public static void Init(IConfiguration config, IHostEnvironment environ)
+        public int ServerNum { get; private set; } = -1;
+        public string ServerIp { get; private set; } = string.Empty;
+        public string EnvName { get; private set; } = string.Empty;
+        public bool UseSwagger { get; private set; }
+        public MySqlServerVersion? DbVersion { get; private set; }
+        public List<string> UserDbConnectionStrList { get; private set; } = new();
+        public List<string> AuthDbConnectionStrList { get; private set; } = new();
+        public TimeSpan SessionExpireSpan { get; private set; } = new();
+        public void Init(IConfiguration config, IHostEnvironment environ)
         {
             ServerIp = GetServerIp();
             EnvName = environ.EnvironmentName;
 
             UseSwagger = config.GetValue("UseSwagger", false);
 
+            SessionExpireSpan = config.GetValue("SessionExpireSpan", TimeSpan.FromMinutes(20));
+
             DbVersion = new MySqlServerVersion(config.GetValue("Db:Version", "0.0.0"));
             UserDbConnectionStrList = config.GetValueStringList("Db:UserDb:ConnectionStrList");
             AuthDbConnectionStrList = config.GetValueStringList("Db:AuthDb:ConnectionStrList");
         }
 
-        private static string GetServerIp()
+        private string GetServerIp()
         {
             // 호스트 이름 가져오기
             var hostName = Dns.GetHostName();

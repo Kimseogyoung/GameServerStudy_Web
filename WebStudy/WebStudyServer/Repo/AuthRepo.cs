@@ -2,33 +2,29 @@
 using System.Numerics;
 using System.Threading.Channels;
 using WebStudyServer.Base;
+using WebStudyServer.GAME;
 using WebStudyServer.Model.Auth;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebStudyServer.Repo
 {
     public class AuthRepo : RepoBase
     {
-        protected override List<string> _dbConnStrList => CONFIG.AuthDbConnectionStrList;
+        public RpcContext RpcContext {  get; private set; }
+        protected override List<string> _dbConnStrList => APP.Cfg.AuthDbConnectionStrList;
+        public AuthRepo(RpcContext rpcContext)
+        {
+            RpcContext = rpcContext;
+        }
 
         #region
-        public AccountModel CreateAccount()
+        public AccountModel CreateAccount(AccountModel newAccount)
         {
-            var newAccount = new AccountModel
-            {
-                ShardId = 0,
-                State = 1,
-                AdditionalPlayerCount = 0,
-                ClientSecret = "",
-                Flag = 0,
-            };
-
             // 데이터베이스에 삽입
             _executor.Excute((sqlConnection) =>
             {
                 // INSERT 쿼리 후 삽입된 전체 Account 데이터를 가져오는 쿼리
-                const string insertSql = "INSERT INTO Account (ShardId, State, AdditionalPlayerCount, ClientSecret, Flag, Name, Level) " +
-                                          "VALUES (@ShardId, @State, @AdditionalPlayerCount, @ClientSecret, @Flag, @Name, @Level); " +
+                const string insertSql = "INSERT INTO Account (ShardId, State, AdditionalPlayerCount, ClientSecret, Flag) " +
+                                          "VALUES (@ShardId, @State, @AdditionalPlayerCount, @ClientSecret, @Flag); " +
                                           "SELECT * FROM Account WHERE Id = CAST(SCOPE_IDENTITY() AS int);";
 
                 // Dapper의 QuerySingleOrDefault 메서드를 사용하여 결과를 AccountModel로 변환
@@ -61,9 +57,7 @@ namespace WebStudyServer.Repo
                         State = @State,
                         AdditionalPlayerCount = @AdditionalPlayerCount,
                         ClientSecret = @ClientSecret,
-                        Flag = @Flag,
-                        Name = @Name,
-                        Level = @Level
+                        Flag = @Flag
                     WHERE Id = @Id;";
 
             _executor.Excute((sqlConnection) =>
@@ -81,9 +75,9 @@ namespace WebStudyServer.Repo
             _executor.Excute((sqlConnection) =>
             {
                 // INSERT 쿼리 후 삽입된 전체 Account 데이터를 가져오는 쿼리
-                const string insertSql = "INSERT INTO Device (ShardId, State, AdditionalPlayerCount, ClientSecret, Flag, Name, Level) " +
+                const string insertSql = "INSERT INTO Device (Idfv, AccountId, AdditionalPlayerCount, ClientSecret, Flag, Name, Level) " +
                                           "VALUES (@ShardId, @State, @AdditionalPlayerCount, @ClientSecret, @Flag, @Name, @Level); " +
-                                          "SELECT * FROM Account WHERE Id = CAST(SCOPE_IDENTITY() AS int);";
+                                          "SELECT * FROM Device WHERE Idfv = CAST(SCOPE_IDENTITY() AS int);";
 
                 // Dapper의 QuerySingleOrDefault 메서드를 사용하여 결과를 AccountModel로 변환
                 newDevice = sqlConnection.QuerySingleOrDefault<DeviceModel>(insertSql, inChannel);
@@ -146,6 +140,20 @@ namespace WebStudyServer.Repo
 
             return newChannel; // 새로 생성된 계정 모델 반환
         }
+
+        public List<ChannelModel> GetChannelList(ulong accountId)
+        {
+           var mdlChannelList = new List<ChannelModel>();
+
+            _executor.Excute((sqlConnection) =>
+            {
+                const string selectSql = "SELECT * FROM Channel WHERE AccountId = @AccountId;";
+                mdlChannelList = sqlConnection.Query<ChannelModel>(selectSql, new { AccountId = accountId}).ToList();
+            });
+
+            return mdlChannelList;
+        }
+
 
         public ChannelModel GetChannel(string key)
         {

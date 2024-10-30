@@ -1,5 +1,6 @@
 ﻿using WebStudyServer.Base;
 using WebStudyServer.Manager;
+using WebStudyServer.Model.Auth;
 using WebStudyServer.Repo;
 
 namespace WebStudyServer.Component
@@ -24,7 +25,17 @@ namespace WebStudyServer.Component
 
         public DeviceManager CreateDevice(string idfv)
         {
-            var repoDevice = _authRepo.CreateDevice(new Model.Auth.DeviceModel { Idfv = idfv });// TODO:
+            var newDevice = new DeviceModel
+            {
+                Idfv = idfv,
+                Idfa = "",
+                AccountId = _authRepo.RpcContext.AccountId,
+                State = Proto.EDeviceState.ACTIVE,
+                Country = "",
+                GeoIpCountry = "",
+                Language = ""
+            };
+            var repoDevice = _authRepo.CreateDevice(newDevice);
             var mgrDevice = new DeviceManager(_authRepo, repoDevice);
             return mgrDevice;
         }

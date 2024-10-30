@@ -1,4 +1,5 @@
 ﻿using WebFramework.Config;
+using WebStudyServer.GAME;
 
 namespace WebStudyServer
 {
@@ -14,7 +15,7 @@ namespace WebStudyServer
              .AddYamlFile($"appsettings.{builder.Environment.EnvironmentName}.yaml", optional: true)
              .AddEnvironmentVariables();
 
-            CONFIG.Init(builder.Configuration, builder.Environment);
+            APP.Init(builder.Configuration, builder.Environment);
         }
     }
 }

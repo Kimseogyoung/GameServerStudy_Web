@@ -1,5 +1,8 @@
-﻿using WebStudyServer.Base;
+﻿using Proto;
+using WebStudyServer.Base;
+using WebStudyServer.Helper;
 using WebStudyServer.Manager;
+using WebStudyServer.Model.Auth;
 using WebStudyServer.Repo;
 
 namespace WebStudyServer.Component
@@ -22,12 +25,23 @@ namespace WebStudyServer.Component
             return true;
         }
 
-        public SessionManager Touch(ulong accountId)
+        public SessionManager Touch(ulong accountId, string idfv)
         {
             var repoSession = _authRepo.GetSessionByAccountId(accountId);
             if (repoSession == null)
-                repoSession = _authRepo.CreateSession( new Model.Auth.SessionModel { AccountId = accountId });
+            {
+                var newSession = new SessionModel
+                {
+                    Key = IdHelper.GenerateGuidKey(),
+                    AccountId = accountId,
+                    PublicIp = _authRepo.RpcContext.Ip,
+                    ShardId = _authRepo.RpcContext.ShardId,
+                    State = ESessionState.NONE,
+                    Idfv = idfv,
+                };
 
+                repoSession = _authRepo.CreateSession(newSession);
+            }
             var mgrSession = new SessionManager(_authRepo, repoSession);
             return mgrSession;
         }
