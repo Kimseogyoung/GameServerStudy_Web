@@ -20,9 +20,9 @@ namespace WebStudyServer.Model.Auth
 
         public string ClientSecret { get; set; }
 
-        public byte[] EncryptSecret { get; set; }
+        public string EncryptSecret { get; set; }
 
-        public byte[] EncryptIV { get; set; }
+        public string EncryptIV { get; set; }
 
         public string PublicIp { get; set; }
     }

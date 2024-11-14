@@ -21,7 +21,7 @@ namespace WebStudyServer.Filter
                 { "Body", context.ActionArguments },
             };
 
-            _logger.Info("Req Method({Method}) Path({Path})", args);
+            _logger.Info("Req Method({Method}) Path({Path}) Body({Body})", args);
         }
 
         public override void OnResultExecuted(ResultExecutedContext context)
@@ -43,7 +43,7 @@ namespace WebStudyServer.Filter
                 { "Body", resBody },
             };
 
-            _logger.Info("Res Method({Method}) Path({Path}) Code({Code})", args);
+            _logger.Info("Res Method({Method}) Path({Path}) Code({Code}) Body({Body})", args);
         }
 
         private readonly ILogger _logger;

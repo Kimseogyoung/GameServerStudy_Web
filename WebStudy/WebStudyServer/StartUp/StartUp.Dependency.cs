@@ -3,6 +3,7 @@ using System.Net;
 using WebStudyServer.Component;
 using WebStudyServer.Filter;
 using WebStudyServer.Manager;
+using WebStudyServer.Service;
 
 namespace WebStudyServer
 {
@@ -32,7 +33,12 @@ namespace WebStudyServer
 
         private void AddServices(IServiceCollection services)
         {
+            services.AddScoped<AuthComponent>();
             services.AddScoped<AccountComponent>();
+            services.AddScoped<ChannelComponent>();
+            services.AddScoped<DeviceComponent>();
+            services.AddScoped<SessionComponent>();
+            services.AddScoped<RpcContext>();
         }
     }
 }

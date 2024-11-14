@@ -7,7 +7,6 @@ namespace WebStudyServer.Model.Auth
 {
     public class AccountModel : ModelBase
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public ulong Id { get; set; }
 
         public int ShardId { get; set; }

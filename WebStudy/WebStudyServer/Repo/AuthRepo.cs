@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Threading.Channels;
 using WebStudyServer.Base;
+using WebStudyServer.Extension;
 using WebStudyServer.GAME;
 using WebStudyServer.Model.Auth;
 
@@ -22,13 +23,7 @@ namespace WebStudyServer.Repo
             // 데이터베이스에 삽입
             _executor.Excute((sqlConnection) =>
             {
-                // INSERT 쿼리 후 삽입된 전체 Account 데이터를 가져오는 쿼리
-                const string insertSql = "INSERT INTO Account (ShardId, State, AdditionalPlayerCount, ClientSecret, Flag) " +
-                                          "VALUES (@ShardId, @State, @AdditionalPlayerCount, @ClientSecret, @Flag); " +
-                                          "SELECT * FROM Account WHERE Id = CAST(SCOPE_IDENTITY() AS int);";
-
-                // Dapper의 QuerySingleOrDefault 메서드를 사용하여 결과를 AccountModel로 변환
-                newAccount = sqlConnection.QuerySingleOrDefault<AccountModel>(insertSql, newAccount);
+                newAccount = sqlConnection.Insert<AccountModel>(newAccount);
             });
 
             return newAccount; // 새로 생성된 계정 모델 반환
@@ -40,8 +35,7 @@ namespace WebStudyServer.Repo
 
             _executor.Excute((sqlConnection) =>
             {
-                const string selectSql = "SELECT * FROM Account WHERE Id = @Id;";
-                mdlAccount = sqlConnection.QuerySingleOrDefault<AccountModel>(selectSql, new { Id = id });
+                mdlAccount = sqlConnection.SelectByPk<AccountModel>(new { Id = id });
             });
 
             return mdlAccount;
@@ -49,20 +43,9 @@ namespace WebStudyServer.Repo
 
         public void UpdateAccount(AccountModel mdlAccount)
         {
-
-            // SQL 쿼리를 사용하여 Account 정보를 업데이트합니다.
-            const string updateSql = @"
-                    UPDATE Account
-                    SET ShardId = @ShardId,
-                        State = @State,
-                        AdditionalPlayerCount = @AdditionalPlayerCount,
-                        ClientSecret = @ClientSecret,
-                        Flag = @Flag
-                    WHERE Id = @Id;";
-
             _executor.Excute((sqlConnection) =>
             {
-                sqlConnection.Execute(updateSql, mdlAccount);
+                sqlConnection.Update(mdlAccount);
             });
         }
         #endregion
@@ -74,26 +57,19 @@ namespace WebStudyServer.Repo
             // 데이터베이스에 삽입
             _executor.Excute((sqlConnection) =>
             {
-                // INSERT 쿼리 후 삽입된 전체 Account 데이터를 가져오는 쿼리
-                const string insertSql = "INSERT INTO Device (Idfv, AccountId, AdditionalPlayerCount, ClientSecret, Flag, Name, Level) " +
-                                          "VALUES (@ShardId, @State, @AdditionalPlayerCount, @ClientSecret, @Flag, @Name, @Level); " +
-                                          "SELECT * FROM Device WHERE Idfv = CAST(SCOPE_IDENTITY() AS int);";
-
-                // Dapper의 QuerySingleOrDefault 메서드를 사용하여 결과를 AccountModel로 변환
-                newDevice = sqlConnection.QuerySingleOrDefault<DeviceModel>(insertSql, inChannel);
+                newDevice = sqlConnection.Insert(inChannel);
             });
 
             return newDevice; // 새로 생성된 계정 모델 반환
         }
 
-        public DeviceModel GetDevice(string idfv)
+        public DeviceModel GetDevice(string deviceKey)
         {
             DeviceModel mdlDevice = null;
 
             _executor.Excute((sqlConnection) =>
             {
-                const string selectSql = "SELECT * FROM Account WHERE Id = @Id;";
-                mdlDevice = sqlConnection.QuerySingleOrDefault<DeviceModel>(selectSql, new { Idfv = idfv });
+                mdlDevice = sqlConnection.SelectByPk<DeviceModel>(new { Key = deviceKey });
             });
 
             return mdlDevice;
@@ -101,22 +77,9 @@ namespace WebStudyServer.Repo
 
         public void UpdateDevice(DeviceModel mdlDevice)
         {
-
-            // SQL 쿼리를 사용하여 Account 정보를 업데이트합니다.
-            const string updateSql = @"
-                    UPDATE Account
-                    SET ShardId = @ShardId,
-                        State = @State,
-                        AdditionalPlayerCount = @AdditionalPlayerCount,
-                        ClientSecret = @ClientSecret,
-                        Flag = @Flag,
-                        Name = @Name,
-                        Level = @Level
-                    WHERE Id = @Id;";
-
             _executor.Excute((sqlConnection) =>
             {
-                sqlConnection.Execute(updateSql, mdlDevice);
+                sqlConnection.Update(mdlDevice);
             });
         }
         #endregion
@@ -127,16 +90,10 @@ namespace WebStudyServer.Repo
         {
             ChannelModel newChannel = null;
             // 데이터베이스에 삽입
-            _executor.Excute((Action<System.Data.IDbConnection>)((sqlConnection) =>
-            {
-                // INSERT 쿼리 후 삽입된 전체 Account 데이터를 가져오는 쿼리
-                const string insertSql = "INSERT INTO Device (ShardId, State, AdditionalPlayerCount, ClientSecret, Flag, Name, Level) " +
-                                          "VALUES (@ShardId, @State, @AdditionalPlayerCount, @ClientSecret, @Flag, @Name, @Level); " +
-                                          "SELECT * FROM Account WHERE Id = CAST(SCOPE_IDENTITY() AS int);";
-
-                // Dapper의 QuerySingleOrDefault 메서드를 사용하여 결과를 AccountModel로 변환
-                newChannel = sqlConnection.QuerySingleOrDefault<ChannelModel>(insertSql, (object)inChannel);
-            }));
+            _executor.Excute((sqlConnection) =>
+            { 
+                newChannel = sqlConnection.Insert(inChannel);
+            });
 
             return newChannel; // 새로 생성된 계정 모델 반환
         }
@@ -147,8 +104,7 @@ namespace WebStudyServer.Repo
 
             _executor.Excute((sqlConnection) =>
             {
-                const string selectSql = "SELECT * FROM Channel WHERE AccountId = @AccountId;";
-                mdlChannelList = sqlConnection.Query<ChannelModel>(selectSql, new { AccountId = accountId}).ToList();
+                mdlChannelList = sqlConnection.SelectListByConditions<ChannelModel>(new { AccountId = accountId }).ToList();
             });
 
             return mdlChannelList;
@@ -161,8 +117,7 @@ namespace WebStudyServer.Repo
 
             _executor.Excute((sqlConnection) =>
             {
-                const string selectSql = "SELECT * FROM Account WHERE Id = @Id;";
-                mdlChannel = sqlConnection.QuerySingleOrDefault<ChannelModel>(selectSql, new { Key = key });
+                mdlChannel = sqlConnection.SelectByPk<ChannelModel>(new { Key = key });
             });
 
             return mdlChannel;
@@ -170,22 +125,9 @@ namespace WebStudyServer.Repo
 
         public void UpdateChannel(ChannelModel mdlChannel)
         {
-
-            // SQL 쿼리를 사용하여 Account 정보를 업데이트합니다.
-            const string updateSql = @"
-                    UPDATE Account
-                    SET ShardId = @ShardId,
-                        State = @State,
-                        AdditionalPlayerCount = @AdditionalPlayerCount,
-                        ClientSecret = @ClientSecret,
-                        Flag = @Flag,
-                        Name = @Name,
-                        Level = @Level
-                    WHERE Id = @Id;";
-
             _executor.Excute((sqlConnection) =>
             {
-                sqlConnection.Execute(updateSql, mdlChannel);
+                sqlConnection.Update(mdlChannel);
             });
         }
         #endregion
@@ -196,16 +138,10 @@ namespace WebStudyServer.Repo
         {
             SessionModel newSession = null;
             // 데이터베이스에 삽입
-            _executor.Excute((Action<System.Data.IDbConnection>)((sqlConnection) =>
+            _executor.Excute((sqlConnection) =>
             {
-                // INSERT 쿼리 후 삽입된 전체 Account 데이터를 가져오는 쿼리
-                const string insertSql = "INSERT INTO Device (ShardId, State, AdditionalPlayerCount, ClientSecret, Flag, Name, Level) " +
-                                          "VALUES (@ShardId, @State, @AdditionalPlayerCount, @ClientSecret, @Flag, @Name, @Level); " +
-                                          "SELECT * FROM Account WHERE Id = CAST(SCOPE_IDENTITY() AS int);";
-
-                // Dapper의 QuerySingleOrDefault 메서드를 사용하여 결과를 AccountModel로 변환
-                newSession = sqlConnection.QuerySingleOrDefault<SessionModel>(insertSql, (object)inSession);
-            }));
+                newSession = sqlConnection.Insert(inSession);
+            });
 
             return newSession; // 새로 생성된 계정 모델 반환
         }
@@ -216,8 +152,7 @@ namespace WebStudyServer.Repo
 
             _executor.Excute((sqlConnection) =>
             {
-                const string selectSql = "SELECT * FROM Account WHERE Id = @Id;";
-                mdlSession = sqlConnection.QuerySingleOrDefault<SessionModel>(selectSql, new { Key = key});
+                mdlSession = sqlConnection.SelectByPk<SessionModel>(new { Key = key});
             });
 
             return mdlSession;
@@ -229,8 +164,7 @@ namespace WebStudyServer.Repo
 
             _executor.Excute((sqlConnection) =>
             {
-                const string selectSql = "SELECT * FROM Account WHERE Id = @Id;";
-                mdlSession = sqlConnection.QuerySingleOrDefault<SessionModel>(selectSql, new { AccountId = accountId});
+                mdlSession = sqlConnection.SelectByConditions<SessionModel>(new { AccountId = accountId});
             });
 
             return mdlSession;
@@ -238,22 +172,9 @@ namespace WebStudyServer.Repo
 
         public void UpdateSession(SessionModel mdlSession)
         {
-
-            // SQL 쿼리를 사용하여 Account 정보를 업데이트합니다.
-            const string updateSql = @"
-                    UPDATE Account
-                    SET ShardId = @ShardId,
-                        State = @State,
-                        AdditionalPlayerCount = @AdditionalPlayerCount,
-                        ClientSecret = @ClientSecret,
-                        Flag = @Flag,
-                        Name = @Name,
-                        Level = @Level
-                    WHERE Id = @Id;";
-
             _executor.Excute((sqlConnection) =>
             {
-                sqlConnection.Execute(updateSql, mdlSession);
+                sqlConnection.Update(mdlSession);
             });
         }
         #endregion

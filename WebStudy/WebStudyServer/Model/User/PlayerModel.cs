@@ -5,7 +5,6 @@ using WebStudyServer;
 
 namespace WebStudyServer.Model.User
 {
-    [Table("Player"), PrimaryKey("Id"), Index("AccountId")]
     public class PlayerModel
     {
         public ulong Id { get; set; } = default;

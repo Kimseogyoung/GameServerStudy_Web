@@ -27,7 +27,7 @@ namespace WebStudyServer.Component
         {
             var newDevice = new DeviceModel
             {
-                Idfv = idfv,
+                Key = idfv,
                 Idfa = "",
                 AccountId = _authRepo.RpcContext.AccountId,
                 State = Proto.EDeviceState.ACTIVE,
