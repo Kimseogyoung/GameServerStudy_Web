@@ -2,11 +2,15 @@
 using System.Net;
 using Microsoft.EntityFrameworkCore;
 using WebStudyServer.StartUp;
+using Microsoft.VisualBasic;
+using System.Diagnostics;
 
 namespace WebStudyServer
 { 
     public class Config
     {
+        public string LogFolder { get; private set; } = string.Empty;
+        public LogLevel LogLevel { get; private set; } = LogLevel.Debug;
         public int ServerNum { get; private set; } = -1;
         public string ServerIp { get; private set; } = string.Empty;
         public string EnvName { get; private set; } = string.Empty;
@@ -27,6 +31,9 @@ namespace WebStudyServer
             DbVersion = new MySqlServerVersion(config.GetValue("Db:Version", "0.0.0"));
             UserDbConnectionStrList = config.GetValueStringList("Db:UserDb:ConnectionStrList");
             AuthDbConnectionStrList = config.GetValueStringList("Db:AuthDb:ConnectionStrList");
+
+            LogFolder = config.GetValue("Logging:Folder", "logs");
+            LogLevel = config.GetValue("Logging:Level", LogLevel.Debug);
         }
 
         private string GetServerIp()

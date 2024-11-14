@@ -1,5 +1,13 @@
 UseSwagger: true
 SessionExpireSpan: 00:20:00
+Logging:
+    LogFolder: ../logs
+    LogLevel:
+        Default: Debug
+        Microsoft.AspNetCore: Warning
+        Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware: Information
+        Sentry.ISentryClient: Warning
+        DbLoggerCategory.Database.Command: Warning
 Db:
     Version: 8.0.21
     UserDb:

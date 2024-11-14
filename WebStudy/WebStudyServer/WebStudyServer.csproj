@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="nlog.config" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="appsettings.yaml" />
   </ItemGroup>
 
@@ -20,6 +24,9 @@
     <PackageReference Include="IdGen" Version="3.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
+    <PackageReference Include="NLog" Version="5.3.4" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.3.14" />
+    <PackageReference Include="NLog.Web" Version="5.3.14" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
@@ -33,6 +40,10 @@
     <ProjectReference Include="..\Protocol\Protocol.csproj" />
     <ProjectReference Include="..\Proto\Proto.csproj" />
     <ProjectReference Include="..\WebFramework\WebFramework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="nlog.config" />
   </ItemGroup>
 
 </Project>
