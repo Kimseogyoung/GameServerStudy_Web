@@ -19,7 +19,6 @@ namespace WebStudyServer
             builder.Logging.ClearProviders(); // 기본 로깅 제공자 제거
             builder.Logging.AddNLog(); // NLog 사용 설정
             builder.Logging.SetMinimumLevel(logLevel); // 로깅 최소 수준 설정
-            builder.Logging.AddFilter("Microsoft.AspNetCore.Mvc.ModelBinding.ModelBinderFactory", Microsoft.Extensions.Logging.LogLevel.Warning); //DbLog Warnning 레벨만 출력
 
             var logDirectory = Path.Combine(Directory.GetCurrentDirectory(), "..", "logs");
             if (!Directory.Exists(logDirectory))

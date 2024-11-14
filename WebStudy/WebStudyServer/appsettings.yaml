@@ -8,6 +8,7 @@ Logging:
         Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware: Information
         Sentry.ISentryClient: Warning
         DbLoggerCategory.Database.Command: Warning
+        Microsoft.AspNetCore.Mvc.ModelBinding.ModelBinderFactory: Warning
 Db:
     Version: 8.0.21
     UserDb:
