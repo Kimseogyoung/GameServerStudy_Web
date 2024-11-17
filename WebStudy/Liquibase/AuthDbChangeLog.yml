@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - preConditions:
+    - runningAs:
+        username:  root
+  - changeSet:
+      id: create-account-table
+      author: seogyoung
+      changes:
+        - createTable:
+            tableName: Account
+            columns:
+              - column:
+                  name: Id
+                  type: BIGINT UNSIGNED
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: ShardId
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: State
+                  type: INT
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 0
+              - column:
+                  name: ClientSecret
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: AdditionalPlayerCnt
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: Flag
+                  type: BIGINT UNSIGNED
+                  constraints:
+                    nullable: false
