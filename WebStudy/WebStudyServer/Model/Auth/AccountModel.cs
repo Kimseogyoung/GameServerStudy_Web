@@ -15,7 +15,7 @@ namespace WebStudyServer.Model.Auth
 
         public string ClientSecret { get; set; }
 
-        public int AdditionalPlayerCount { get; set; }
+        public int AdditionalPlayerCnt { get; set; }
 
         public ulong Flag { get; set; }
     }

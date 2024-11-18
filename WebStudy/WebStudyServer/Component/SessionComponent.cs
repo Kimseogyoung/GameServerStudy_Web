@@ -37,6 +37,11 @@ namespace WebStudyServer.Component
                     PublicIp = _authRepo.RpcContext.Ip,
                     ShardId = _authRepo.RpcContext.ShardId,
                     State = ESessionState.NONE,
+                    ClientSecret = "",
+                    EncryptSecret = "",
+                    EncryptIV = "",
+                    ExpireTimestamp = 0,
+                    PlayerId = 0,
                     Idfv = idfv,
                 };
 

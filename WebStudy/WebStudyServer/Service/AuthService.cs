@@ -8,8 +8,9 @@ namespace WebStudyServer.Service
 {
     public class AuthService : ServiceBase
     {
-        public AuthService(AuthComponent authComp, RpcContext rpcContext, ILogger<AuthService> logger) :base(rpcContext, logger) 
+        public AuthService(AuthRepo authRepo, AuthComponent authComp, RpcContext rpcContext, ILogger<AuthService> logger) :base(rpcContext, logger) 
         {
+            _authRepo = authRepo;// 임시
             _authComp = authComp;
         }
 
@@ -53,6 +54,7 @@ namespace WebStudyServer.Service
             
             // 세션 갱신 및 리턴
             mgrSession.Start();
+            _authRepo.Commit();
 
             return new AuthSignInResult
             {
@@ -64,7 +66,7 @@ namespace WebStudyServer.Service
             };
         }
 
-        public AuthSignInResult SignIn()
+        public AuthSignInResult SignIn(string channelId)
         {
             // 채널 찾기
 
@@ -76,6 +78,7 @@ namespace WebStudyServer.Service
             return null;
         }
 
+        private readonly AuthRepo _authRepo;
         private readonly AuthComponent _authComp;
     }
 }

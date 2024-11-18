@@ -4,13 +4,13 @@ namespace WebStudyServer
 {
     public class RpcContext
     {
-        public string SessionId { get; private set; }
-     
+        public string SessionId { get; private set; } = string.Empty;
+
         public ulong AccountId { get; private set; }
 
         public ulong PlayerId { get; private set; }
 
-        public string Ip { get; private set; }
+        public string Ip { get; private set; } = string.Empty;
 
         public int ShardId { get; private set; }
 

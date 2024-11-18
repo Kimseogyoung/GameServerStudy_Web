@@ -1,5 +1,6 @@
 ﻿using MySqlConnector;
 using System.Data;
+using System.Data.Common;
 
 namespace WebStudyServer.Repo.Database
 {
@@ -21,14 +22,14 @@ namespace WebStudyServer.Repo.Database
             return excutor;
         }
 
-        public void Excute(Action<IDbConnection> func)
+        public void Excute(Action<IDbConnection, IDbTransaction> func)
         {
-            func.Invoke(_connection);
+            func.Invoke(_connection, _transaction);
         }
 
-        public T Excute<T>(Func<IDbConnection, T> func)
+        public T Excute<T>(Func<IDbConnection, IDbTransaction, T> func)
         {
-            return func.Invoke(_connection);
+            return func.Invoke(_connection, _transaction);
         }
 
         public void Commit()

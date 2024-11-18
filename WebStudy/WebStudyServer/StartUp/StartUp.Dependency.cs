@@ -33,6 +33,8 @@ namespace WebStudyServer
 
         private void AddServices(IServiceCollection services)
         {
+            services.AddScoped<AuthService>();
+
             services.AddScoped<AuthComponent>();
             services.AddScoped<AccountComponent>();
             services.AddScoped<ChannelComponent>();

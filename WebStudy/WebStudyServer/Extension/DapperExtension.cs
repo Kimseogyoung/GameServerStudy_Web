@@ -3,24 +3,34 @@ using System.Collections.Concurrent;
 using System.Data;
 using System.Reflection;
 using System.Text;
+using WebStudyServer.Model;
 using WebStudyServer.Model.Auth;
 
 namespace WebStudyServer.Extension
 {
     public static class DapperExtension
     {
+        private static readonly ConcurrentDictionary<Type, string> s_modelNameDict = new();
         private static readonly ConcurrentDictionary<Type, QueryParam> s_queryParamDict = new();
         private static readonly ConcurrentDictionary<Type, string> s_pkWhereClauseDict= new();
 
         // 여러 필드를 기본 키로 설정하는 메서드
 
+
         public static void Init<T>(params string[] keyFields)
         {
+            var type = typeof(T);
+            var tableName = type.Name;
+            if (tableName.EndsWith("Model"))
+            {
+                tableName = tableName.Substring(0, tableName.Length - 5);
+            }
+            s_modelNameDict[type] = tableName;
             SetPKWhereClause<T>(keyFields);
             SetQueryParameter<T>();
         }
 
-        public static T Insert<T>(this IDbConnection connection, T entity)
+        public static T Insert<T>(this IDbConnection connection, T entity, IDbTransaction transaction)
         {
             var queryParam = GetQueryParameter<T>();
 
@@ -35,20 +45,20 @@ namespace WebStudyServer.Extension
             if (hasIdProperty)
             {
                 insertSql += $@"
-                SELECT * FROM {queryParam.TableName} WHERE Id = CAST(SCOPE_IDENTITY() AS BIGINT);";
-                    return connection.QuerySingleOrDefault<T>(insertSql, entity);
+                SELECT * FROM {queryParam.TableName} WHERE Id = CONVERT(LAST_INSERT_ID(), UNSIGNED);";
+                    return connection.QuerySingleOrDefault<T>(insertSql, entity, transaction);
             }
             else
             {
                 // Id가 없으면 INSERT만 수행
-                connection.Execute(insertSql, entity);
+                connection.Execute(insertSql, entity, transaction);
                 return entity;
             }
         }
 
-        public static void Update<T>(this IDbConnection connection, T entity)
+        public static void Update<T>(this IDbConnection connection, T entity, IDbTransaction transaction)
         {
-            var tableName = typeof(T).Name;
+            var tableName = GetTableName<T>();
             var queryParam = GetQueryParameter<T>();
             var whereClause = GetWhereClause<T>();
 
@@ -58,23 +68,23 @@ namespace WebStudyServer.Extension
             SET {queryParam.UpdateSet} 
             WHERE {whereClause};";
 
-            connection.Execute(updateSql, entity);
+            connection.Execute(updateSql, entity, transaction);
         }
 
-        public static T SelectByPk<T>(this IDbConnection connection, object keyValues)
+        public static T SelectByPk<T>(this IDbConnection connection, object keyValues, IDbTransaction transaction)
         {
-            var tableName = typeof(T).Name;
+            var tableName = GetTableName<T>();
             var queryParam = GetQueryParameter<T>();
             var whereClause = GetWhereClause<T>();
 
             string selectSql = $@"SELECT * FROM {tableName} WHERE {whereClause};";
 
-            return connection.QuerySingleOrDefault<T>(selectSql, keyValues);
+            return connection.QuerySingleOrDefault<T>(selectSql, keyValues, transaction);
         }
 
-        public static T SelectByConditions<T>(this IDbConnection connection, object keyValues)
+        public static T SelectByConditions<T>(this IDbConnection connection,object keyValues, IDbTransaction transaction)
         {
-            var tableName = typeof(T).Name;
+            var tableName = GetTableName<T>();
             var queryParam = GetQueryParameter<T>();
             var whereClause = GetWhereClause<T>();
 
@@ -110,23 +120,23 @@ namespace WebStudyServer.Extension
                 }
             }
 
-            return connection.QuerySingleOrDefault<T>(queryBuilder.ToString(), keyValues);
+            return connection.QuerySingleOrDefault<T>(queryBuilder.ToString(), keyValues, transaction);
         }
 
-        public static IEnumerable<T> SelectListByPlayerId<T>(this IDbConnection connection, ulong playerId)
+        public static IEnumerable<T> SelectListByPlayerId<T>(this IDbConnection connection, ulong playerId, IDbTransaction transaction)
         {
-            var tableName = typeof(T).Name;
+            var tableName = GetTableName<T>();
             var queryParam = GetQueryParameter<T>();
             var whereClause = GetWhereClause<T>();
 
             string selectSql = $@"SELECT * FROM {tableName} WHERE PlayerId = @PlayerId;";
 
-            return connection.Query<T>(selectSql, new {PlayerId = playerId });
+            return connection.Query<T>(selectSql, new {PlayerId = playerId }, transaction);
         }
 
-        public static IEnumerable<T> SelectListByConditions<T>(this IDbConnection connection, object keyValues)
+        public static IEnumerable<T> SelectListByConditions<T>(this IDbConnection connection, object keyValues, IDbTransaction transaction)
         {
-            var tableName = typeof(T).Name;
+            var tableName = GetTableName<T>();
             var queryBuilder = new StringBuilder();
 
             // 기본 쿼리
@@ -160,34 +170,34 @@ namespace WebStudyServer.Extension
             string selectSql = queryBuilder.ToString();
 
             // Dapper 실행
-            return connection.Query<T>(selectSql, keyValues);
+            return connection.Query<T>(selectSql, keyValues, transaction);
         }
 
         private static void SetPKWhereClause<T>(params string[] keyFields)
         {
-            var tableName = typeof(T).Name;
+            var tableName = GetTableName<T>();
 
             if (keyFields == null || keyFields.Length == 0)
                 throw new ArgumentException($"ZERO_KEY_FILED Name({tableName})");
 
-            var whereClause = string.Join(" AND ", keyFields.Select(k => $"{k} = @{k}"));
+            var whereClause = string.Join(" AND ", keyFields.Select(k => $"`{k}` = @{k}"));
             s_pkWhereClauseDict[typeof(T)] = whereClause;
         }
 
         private static void SetQueryParameter<T>()
         {
             var type = typeof(T);
-            var tableName = typeof(T).Name;
+            var tableName = GetTableName<T>();
 
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-            var fields = string.Join(", ", properties.Select(p => p.Name));
+            var fields = string.Join(", ", properties.Select(p => $"`{p.Name}`"));
 
             var parameters = string.Join(", ", properties.Select(p => "@" + p.Name));
 
             var updateSet = string.Join(", ", properties
                 .Where(p => p.Name != "Id")
-                .Select(p => $"{p.Name} = @{p.Name}"));
+                .Select(p => $"`{p.Name}` = @{p.Name}"));
 
             var queryParam = new QueryParam(tableName, fields, parameters, updateSet);
 
@@ -197,7 +207,7 @@ namespace WebStudyServer.Extension
 
         private static string GetWhereClause<T>()
         {
-            var tableName = typeof(T).Name;
+            var tableName = GetTableName<T>();
             if (!s_pkWhereClauseDict.TryGetValue(typeof(T), out var outWhereClause))
             {
                 throw new GameException($"NOT_FOUND_WHERE_CLAUSE", new { TableName = tableName });
@@ -208,13 +218,24 @@ namespace WebStudyServer.Extension
 
         private static QueryParam GetQueryParameter<T>()
         {
-            var tableName = typeof(T).Name;
+            var tableName = GetTableName<T>();
             if (!s_queryParamDict.TryGetValue(typeof(T), out var outQueryParam))
             {
                 throw new GameException($"NOT_FOUND_QUERY_PARAM", new { TableName = tableName });
             }
            
             return outQueryParam;
+        }
+
+        private static string GetTableName<T>()
+        {
+            var typeName = typeof(T).Name;
+            if (!s_modelNameDict.TryGetValue(typeof(T), out var name))
+            {
+                throw new GameException($"NOT_FOUND_QUERY_PARAM", new { TableName = typeName });
+            }
+
+            return name;
         }
 
         private class QueryParam

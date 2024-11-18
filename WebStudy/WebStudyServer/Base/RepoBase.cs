@@ -29,7 +29,7 @@ namespace WebStudyServer.Base
 
         private string GetDbConnectionStr()
         {
-            if(_shardCnt >= ShardId)
+            if(_shardCnt <= ShardId)
             {
                 throw new Exception("dd");
             }

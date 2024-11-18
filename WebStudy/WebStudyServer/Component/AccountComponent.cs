@@ -29,7 +29,7 @@ namespace WebStudyServer.Component
             {
                 ShardId = 0, // TODO: ShardId
                 State = Proto.EAccountState.ACTIVE,
-                AdditionalPlayerCount = 0,
+                AdditionalPlayerCnt = 0,
                 ClientSecret = ""
             };
 
