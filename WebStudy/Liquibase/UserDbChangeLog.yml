@@ -1,13 +1,13 @@
 databaseChangeLog:
-- preConditions:
+  - preConditions:
     - runningAs:
         username:  root
   - changeSet:
-      id: create-account-table
+      id: create-player-table
       author: seogyoung
       changes:
         - createTable:
-            tableName: Account
+            tableName: Player
             columns:
               - column:
                   name: Id
@@ -16,28 +16,44 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: ShardId
-                  type: INT
+                  name: AccountId
+                  type: BIGINT UNSIGNED
                   constraints:
                     nullable: false
               - column:
-                  name: State
-                  type: INT
-                  constraints:
-                    nullable: false
-                  defaultValueNumeric: 0
-              - column:
-                  name: ClientSecret
+                  name: ProfileName
                   type: VARCHAR(255)
                   constraints:
-                    nullable: true
+                    nullable: false
               - column:
-                  name: AdditionalPlayerCnt
+                  name: Lv
                   type: INT
                   constraints:
                     nullable: false
               - column:
                   name: Flag
                   type: BIGINT UNSIGNED
+                  constraints:
+                    nullable: false
+              - column:
+                  name: Name
+                  type: BIGINT UNSIGNED
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: add-player-time
+      author: seogyoung
+      changes:
+        - addColumn:
+            tableName: Player
+            columns:
+              - column:
+                  name: UpdateTime
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CreateTime
+                  type: DATETIME
                   constraints:
                     nullable: false

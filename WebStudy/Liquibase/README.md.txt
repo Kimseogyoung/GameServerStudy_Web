@@ -4,11 +4,12 @@
 ```
 liquibase status
 
-liquibase \
-  --url="jdbc:mysql://localhost:3306/your_database_name" \
-  --username="your_username" \
-  --password="your_password" \
-  --driver="com.mysql.cj.jdbc.Driver" \
+liquibase ^
+  --url="jdbc:mysql://localhost:3306/your_database_name" ^
+  --username="your_username" ^
+  --password="your_password" ^
+  --driver="com.mysql.cj.jdbc.Driver" ^
+  --changeLogFile="UserDbChangeLog.yml" ^
   status
 ```
 
@@ -16,12 +17,12 @@ liquibase \
 ```
 liquibase update
 
-liquibase \
-  --url="jdbc:mysql://localhost:3306/your_database_name" \
-  --username="your_username" \
-  --password="your_password" \
-  --driver="com.mysql.cj.jdbc.Driver" \
-  --changeLogFile="UserDbChangeLog.yaml" \
+liquibase ^
+  --url="jdbc:mysql://localhost:3306/your_database_name" ^
+  --username="your_username" ^
+  --password="your_password" ^
+  --driver="com.mysql.cj.jdbc.Driver" ^
+  --changeLogFile="UserDbChangeLog.yml" ^
   update
 ```
 적용 시 `DATABASECHANGELOG` 테이블에 로그 기록
@@ -29,6 +30,14 @@ liquibase \
 - 롤백 (최신 1개 되돌리기)
 ```
 liquibase rollbackCount 1
+
+liquibase ^
+  --url="jdbc:mysql://localhost:3306/AuthDb" ^
+  --username="your_username" ^
+  --password="your_password" ^
+  --driver="com.mysql.cj.jdbc.Driver" ^
+  --changeLogFile="AuthDbChangeLog.yml" ^
+  rollbackCount 1
 ```
 
 - JDBC 드라이버 설정
