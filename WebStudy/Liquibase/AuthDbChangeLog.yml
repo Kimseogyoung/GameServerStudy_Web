@@ -41,6 +41,13 @@ databaseChangeLog:
                   type: BIGINT UNSIGNED
                   constraints:
                     nullable: false
+        - addAutoIncrement:
+            tableName: Account
+            columnDataType:  BIGINT UNSIGNED
+            columnName: Id
+            defaultOnNull: false
+            generationType: ALWAYS
+            startWith: 100
   - changeSet:
       id: create-auth-table
       author: seogyoung
