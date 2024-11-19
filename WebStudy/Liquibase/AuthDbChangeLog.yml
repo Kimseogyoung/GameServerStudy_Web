@@ -149,12 +149,12 @@ databaseChangeLog:
                   name: Key
                   type: VARCHAR(255)
                   constraints:
-                    primaryKey: true
                     nullable: false
               - column:
                   name: AccountId
                   type: BIGINT UNSIGNED
                   constraints:
+                    primaryKey: true
                     nullable: false
               - column:
                   name: PlayerId
@@ -167,7 +167,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: Idfv
+                  name: DeviceKey
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
@@ -211,6 +211,11 @@ databaseChangeLog:
                   type: DATETIME
                   constraints:
                     nullable: false
+            indexes:
+              - index:
+                  name: Session_Key_Index
+                  columns:
+                    - Key
         - createTable:
             tableName: PlayerMap
             columns:

@@ -27,8 +27,9 @@ namespace WebStudyServer.Service
                 {
                     if (_authComp.Channel.TryGetActiveChannel(originMgrAccount.Id, out var originMgrChannel))
                     {
-                        var originMgrSession = _authComp.Session.Touch(originMgrAccount.Id, idfv);
+                        var originMgrSession = _authComp.Session.Touch(originMgrAccount.Id);
                         originMgrSession.Start();
+                        _authRepo.Commit();
                         return new AuthSignInResult
                         {
                             AccountState = originMgrAccount.Model.State,
@@ -44,9 +45,9 @@ namespace WebStudyServer.Service
             // ~idfv가 없다면
 
             // Account 생성
-            var mgrAccount = _authComp.Account.CreateAccount(); // 이미 계정이 있다면 스킵
+            var mgrAccount = _authComp.Account.CreateAccount();
             // Session 생성
-            var mgrSession = _authComp.Session.Touch(mgrAccount.Id, idfv);
+            var mgrSession = _authComp.Session.Touch(mgrAccount.Id);
             // Device 정보 생성
             mgrDevice = _authComp.Device.CreateDevice(idfv);
             // 채널 생성

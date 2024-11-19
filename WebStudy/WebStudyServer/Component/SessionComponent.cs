@@ -25,7 +25,7 @@ namespace WebStudyServer.Component
             return true;
         }
 
-        public SessionManager Touch(ulong accountId, string idfv)
+        public SessionManager Touch(ulong accountId)
         {
             var repoSession = _authRepo.GetSessionByAccountId(accountId);
             if (repoSession == null)
@@ -42,11 +42,21 @@ namespace WebStudyServer.Component
                     EncryptIV = "",
                     ExpireTimestamp = 0,
                     PlayerId = 0,
-                    Idfv = idfv,
+                    DeviceKey = "",
                 };
 
                 repoSession = _authRepo.CreateSession(newSession);
             }
+            var mgrSession = new SessionManager(_authRepo, repoSession);
+            return mgrSession;
+        }
+
+        public SessionManager Touch2(ulong accountId)
+        {
+            var repoSession = new SessionModel
+            {
+                AccountId = 101,
+            };
             var mgrSession = new SessionManager(_authRepo, repoSession);
             return mgrSession;
         }

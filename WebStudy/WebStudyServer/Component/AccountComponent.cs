@@ -35,6 +35,9 @@ namespace WebStudyServer.Component
 
             var repoAccount = _authRepo.CreateAccount(newAccount);
             var mgrAccount = new AccountManager(_authRepo, repoAccount);
+
+            _authRepo.RpcContext.SetAccountId(mgrAccount.Id);
+            _authRepo.RpcContext.SetShardId(mgrAccount.Model.ShardId);
             return mgrAccount;
         }
     }

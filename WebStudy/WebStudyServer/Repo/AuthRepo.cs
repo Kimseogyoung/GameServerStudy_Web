@@ -167,7 +167,7 @@ namespace WebStudyServer.Repo
 
             _executor.Excute((sqlConnection, transaction) =>
             {
-                mdlSession = sqlConnection.SelectByConditions<SessionModel>(new { AccountId = accountId}, transaction);
+                mdlSession = sqlConnection.SelectByConditions<SessionModel>(new { AccountId = accountId }, transaction);
             });
 
             return mdlSession;

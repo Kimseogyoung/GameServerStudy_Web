@@ -29,7 +29,7 @@ namespace WebStudyServer
             DapperExtension.Init<AccountModel>("Id");
             DapperExtension.Init<ChannelModel>("Key");
             DapperExtension.Init<DeviceModel>("Key");
-            DapperExtension.Init<SessionModel>("Key");
+            DapperExtension.Init<SessionModel>("AccountId");
 
             DapperExtension.Init<PlayerModel>("Id");
             DapperExtension.Init<PlayerMapModel>("AccountId");

@@ -27,7 +27,7 @@ namespace WebStudyServer.Extension
             }
             s_modelNameDict[type] = tableName;
             SetPKWhereClause<T>(keyFields);
-            SetQueryParameter<T>();
+            SetQueryParameter<T>(keyFields);
         }
 
         public static T Insert<T>(this IDbConnection connection, T entity, IDbTransaction transaction)
@@ -184,7 +184,7 @@ namespace WebStudyServer.Extension
             s_pkWhereClauseDict[typeof(T)] = whereClause;
         }
 
-        private static void SetQueryParameter<T>()
+        private static void SetQueryParameter<T>(params string[] keyFields)
         {
             var type = typeof(T);
             var tableName = GetTableName<T>();
@@ -196,7 +196,7 @@ namespace WebStudyServer.Extension
             var parameters = string.Join(", ", properties.Select(p => "@" + p.Name));
 
             var updateSet = string.Join(", ", properties
-                .Where(p => p.Name != "Id")
+                .Where(p => !keyFields.Contains(p.Name))
                 .Select(p => $"`{p.Name}` = @{p.Name}"));
 
             var queryParam = new QueryParam(tableName, fields, parameters, updateSet);

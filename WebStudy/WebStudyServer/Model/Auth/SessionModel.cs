@@ -12,7 +12,7 @@ namespace WebStudyServer.Model.Auth
 
         public int ShardId { get; set; }
 
-        public string Idfv { get; set; }
+        public string DeviceKey { get; set; }
 
         public long ExpireTimestamp { get; set; }
 

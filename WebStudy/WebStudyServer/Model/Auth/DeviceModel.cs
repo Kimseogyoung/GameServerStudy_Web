@@ -7,7 +7,7 @@ namespace WebStudyServer.Model.Auth
 {
     public class DeviceModel : ModelBase
     {
-        public string Key { get; set; } // Key
+        public string Key { get; set; }
         public ulong AccountId { get; set; }
         public string Idfa { get; set; }
         public string GeoIpCountry { get; set; }
