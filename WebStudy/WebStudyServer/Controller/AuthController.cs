@@ -7,6 +7,7 @@ namespace WebStudyServer.Controllers
     [ApiController]
     [Route("auth")]
     [ServiceFilter(typeof(LogFilter))]
+    [ServiceFilter(typeof(AuthTransactionFilter))]
     public class AuthController : ControllerBase
     {
         public AuthController(AuthService authService, ILogger<AuthController> logger)

@@ -12,6 +12,8 @@
             try
             {
                 CancelReqException.ThrowCancelRequestException(httpCtx);
+                var rpcContext = httpCtx.RequestServices.GetRequiredService<RpcContext>();
+                rpcContext.Init();
 
                 await _next(httpCtx);
                 return;

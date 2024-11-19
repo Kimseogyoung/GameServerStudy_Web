@@ -1,5 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 using System.Net;
+using WebStudyServer.Middleware;
 
 namespace WebStudyServer
 {
@@ -27,6 +28,8 @@ namespace WebStudyServer
             app.UseAuthorization();
 
             app.MapControllers();
+            app.UseMiddleware<ReqMiddleware>();
+
         }
     }
 }

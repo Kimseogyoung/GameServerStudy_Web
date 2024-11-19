@@ -1,4 +1,5 @@
 ﻿using Proto;
+using WebStudyServer.Extension;
 
 namespace WebStudyServer
 {
@@ -23,9 +24,9 @@ namespace WebStudyServer
         public int Seq { get; private set; }
 
 
-        public RpcContext()
+        public RpcContext(ILogger<RpcContext> logger)
         {
-
+            _logger = logger;
         }
 
         public void Init()
@@ -35,6 +36,7 @@ namespace WebStudyServer
                 return;
             }
 
+            _logger.Info("Init RpcContext");
             _state = ERpcContextState.LOADED;
 
             // TODO: 세션 로드
@@ -70,5 +72,6 @@ namespace WebStudyServer
         }
 
         private ERpcContextState _state = ERpcContextState.NONE;
+        private readonly ILogger _logger;
     }
 }

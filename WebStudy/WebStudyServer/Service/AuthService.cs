@@ -29,7 +29,6 @@ namespace WebStudyServer.Service
                     {
                         var originMgrSession = _authComp.Session.Touch(originMgrAccount.Id);
                         originMgrSession.Start();
-                        _authRepo.Commit();
                         return new AuthSignInResult
                         {
                             AccountState = originMgrAccount.Model.State,
@@ -55,7 +54,6 @@ namespace WebStudyServer.Service
             
             // 세션 갱신 및 리턴
             mgrSession.Start();
-            _authRepo.Commit();
 
             return new AuthSignInResult
             {
