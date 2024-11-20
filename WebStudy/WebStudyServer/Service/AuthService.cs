@@ -16,8 +16,7 @@ namespace WebStudyServer.Service
 
         public AuthSignInResult SignUp(string idfv)
         {
-            // idfv 찾기. 
-            
+            // idfv 찾기.           
             if (_authComp.Device.TryGetDevice(idfv, out var mgrDevice))
             {
                 // 일치하는 idfv가 이미 있다면 해당 계정 정보 리턴

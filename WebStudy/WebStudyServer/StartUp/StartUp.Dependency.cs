@@ -15,11 +15,11 @@ namespace WebStudyServer
             AddFilters(services);
             AddServices(services);
 
-            services.AddExceptionHandler<ErrorHandler>();
+            AddController(services);
 
-            services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
         }
 
         private void AddMiddlewares(IServiceCollection services)
@@ -34,6 +34,8 @@ namespace WebStudyServer
 
         private void AddServices(IServiceCollection services)
         {
+            services.AddScoped<ErrorHandler>();
+
             services.AddScoped<AuthService>();
 
             services.AddScoped<AuthComponent>();
@@ -43,5 +45,22 @@ namespace WebStudyServer
             services.AddScoped<SessionComponent>();
             services.AddScoped<RpcContext>();
         }
+
+        private void AddController(IServiceCollection services)
+        {
+            services.AddControllers(options =>
+            {
+                options.InputFormatters.Insert(0, new CustomInputFormatter());
+                options.OutputFormatters.Insert(0, new CustomOutputFormatter());
+            });
+
+            //net 6.0
+/*            ).AddMvcOptions(options =>
+            {
+                options.InputFormatters.Insert(0, new CustomInputFormatter());
+                options.OutputFormatters.Insert(0, new CustomOutputFormatter());
+            });*/
+        }
+
     }
 }

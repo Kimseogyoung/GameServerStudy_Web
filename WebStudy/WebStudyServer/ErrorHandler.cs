@@ -1,27 +1,62 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
-using WebStudyServer.Service.Singleton;
+using Proto;
+using Protocol;
+using WebStudyServer.Extension;
+using WebStudyServer.Helper;
 
 namespace WebStudyServer
 {
-    public class ErrorHandler : IExceptionHandler
+    public class ErrorHandler
     {
-        public ErrorHandler(ILogger<ErrorHandler> logger) 
+        public ErrorHandler() 
         {
-            _logger = logger;
         }
 
-        public ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+        public Task Handle(HttpContext httpContext)
         {
+            var exc = httpContext.Features.Get<IExceptionHandlerPathFeature>()?.Error;
+            if (exc == null)
+            {
+                _logger.Warn("EXCEPTION_IS_NULL");
+                return Task.FromResult(false);
+            }
 
-            // TODO: Exception별로 핸들링
+            return HandleInternal(httpContext, exc);
+        }
+
+        private Task HandleInternal(HttpContext httpContext, Exception exception)
+        {
+            dynamic dynArgs = "";
+            var errorCode = (int)EErrorCode.NO_HANDLING_ERROR;
+            var errorMsg = exception.Message;
+            var errorHash = HashHelper.CalculateMD5Hash(errorMsg).Substring(0, 6);
+            var errorArgs = "";
+            switch (exception)
+            {
+                case GameException gameExc:
+                    errorCode = gameExc.Code;
+                    break;
+                default:
+                    break;
+            }
 
             // TODO: 로그
+            _logger.Error("Error:{Code}:{Hash}:{Msg} Args({Args})", errorCode, errorHash, errorMsg, errorArgs);
 
             // TODO: 에러 리포트
+            // sentry
 
-            return ValueTask.FromResult(true);
+            var res = new ErrorResponsePacket
+            {
+                Result = new ResponseResultPacket
+                {
+                    Code = errorCode,
+                    Msg = errorMsg,
+                }
+            };
+            return ResWriteHelper.WriteResponseBodyAsync(httpContext, res, typeof(ErrorResponsePacket), StatusCodes.Status500InternalServerError);
         }
 
-        private readonly ILogger _logger;
+        private readonly NLog.ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
     }
 }

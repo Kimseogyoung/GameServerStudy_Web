@@ -1,5 +1,9 @@
 UseSwagger: true
 SessionExpireSpan: 00:20:00
+IsShowErrorDetail: true
+UseStrictValidation: true
+Protocol:
+    ForceContentType: application/json
 Logging:
     LogFolder: ../logs
     LogLevel:

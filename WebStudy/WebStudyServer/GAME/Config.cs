@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WebStudyServer.StartUp;
 using Microsoft.VisualBasic;
 using System.Diagnostics;
+using Protocol;
 
 namespace WebStudyServer
 { 
@@ -19,6 +20,11 @@ namespace WebStudyServer
         public List<string> UserDbConnectionStrList { get; private set; } = new();
         public List<string> AuthDbConnectionStrList { get; private set; } = new();
         public TimeSpan SessionExpireSpan { get; private set; } = new();
+
+        public bool IsShowErrorDetail { get; private set; }
+        public bool UseStrictValidation { get; private set; }
+        public string ForceContentType { get; private set; }
+
         public void Init(IConfiguration config, IHostEnvironment environ)
         {
             ServerIp = GetServerIp();
@@ -34,6 +40,10 @@ namespace WebStudyServer
 
             LogFolder = config.GetValue("Logging:Folder", "logs");
             LogLevel = config.GetValue("Logging:Level", LogLevel.Debug);
+
+            IsShowErrorDetail = config.GetValue("IsShowErrorDetail", false);
+            UseStrictValidation = config.GetValue("UseStrictValidation", true);
+            ForceContentType = config.GetValue("ForceContentType", MsgProtocol.JsonContentType);
         }
 
         private string GetServerIp()

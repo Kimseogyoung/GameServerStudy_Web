@@ -30,6 +30,14 @@ namespace WebStudyServer
             app.MapControllers();
             app.UseMiddleware<ReqMiddleware>();
 
+            app.UseExceptionHandler(builder => builder.Run(
+                context =>
+                {
+                    var errorHandler = context.RequestServices.GetRequiredService<ErrorHandler>();
+                    return errorHandler.Handle(context);
+                }
+            ));
+
         }
     }
 }

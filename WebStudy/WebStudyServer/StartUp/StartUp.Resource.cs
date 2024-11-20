@@ -6,7 +6,6 @@ using Microsoft.VisualBasic.FileIO;
 using SharpYaml;
 using System;
 using System.Net;
-using WebStudyServer.Service.Singleton;
 using WebStudyServer;
 using WebStudyServer.Base;
 using WebStudyServer.Repo;

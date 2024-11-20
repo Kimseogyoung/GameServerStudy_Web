@@ -8,6 +8,6 @@
     public class ResponseResultPacket
     {
         public int Code { get; set; }
-        public int Msg { get; set; }
+        public string Msg { get; set; }
     }
 }

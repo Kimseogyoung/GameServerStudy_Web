@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Cheat\" />
-    <Folder Include="ResponsePacket\" />
     <Folder Include="RequestPacket\" />
   </ItemGroup>
 
