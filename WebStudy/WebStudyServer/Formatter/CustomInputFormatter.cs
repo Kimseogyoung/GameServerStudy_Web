@@ -42,7 +42,11 @@ namespace WebStudyServer
             SupportedEncodings.Add(UTF16EncodingLittleEndian);
         }
 
-        protected override bool CanReadType(Type type)  => true;
+        private static string GetContentTypeByHeader(HttpContext httpContext)
+        {
+            var fullContentType = httpContext.Request.ContentType;
+            return fullContentType.Split(";")[0];
+        }
 
         public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
         {
@@ -56,12 +60,6 @@ namespace WebStudyServer
             }
 
             return await formatter.ReadAsync(context);
-        }
-
-        private static string GetContentTypeByHeader(HttpContext httpContext)
-        {
-            var fullContentType = httpContext.Request.ContentType;
-            return fullContentType.Split(";")[0];
         }
 
         private readonly NLog.ILogger _logger = LogManager.GetCurrentClassLogger();

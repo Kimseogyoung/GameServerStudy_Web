@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Protocol;
 using WebStudyServer.Filter;
 using WebStudyServer.Service;
 
@@ -17,17 +18,24 @@ namespace WebStudyServer.Controllers
         }
 
         [HttpPost("sign-up")]
-        public ActionResult SignUp(string deviceKey)
+        public ActionResult<AuthSignUpResPacket> SignUp(AuthSignUpReqPacket req)
         {
-            var result = _authService.SignUp(deviceKey);
-            return Ok(result);
+            var result = _authService.SignUp(req.DeviceKey);
+
+            return new AuthSignUpResPacket
+            {
+                SessionKey = result.SessionKey
+            };
         }
 
         [HttpPost("sign-in")]
-        public ActionResult<bool> SignIn(string channelId)
+        public ActionResult<AuthSignInResPacket> SignIn(AuthSignInReqPacket req)
         {
-            var result = _authService.SignIn(channelId);
-            return Ok(result);
+            var result = _authService.SignIn(req.ChannelId);
+            return new AuthSignInResPacket
+            {
+                SessionKey = result.SessionKey
+            };
         }
 
         private readonly AuthService _authService;

@@ -1,5 +1,11 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
+using Proto;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Net;
+using System.Net.Mime;
 using WebStudyServer.Component;
 using WebStudyServer.Filter;
 using WebStudyServer.Manager;
@@ -9,6 +15,7 @@ namespace WebStudyServer
 {
     public partial class Startup
     {
+
         public void Dependency(IServiceCollection services)
         {
             AddMiddlewares(services);
@@ -16,10 +23,7 @@ namespace WebStudyServer
             AddServices(services);
 
             AddController(services);
-
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
-
+            AddSwagger(services);
         }
 
         private void AddMiddlewares(IServiceCollection services)
@@ -62,5 +66,42 @@ namespace WebStudyServer
             });*/
         }
 
+        private void AddSwagger(IServiceCollection services)
+        {
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen(c =>
+            {
+                c.EnableAnnotations();
+                c.OperationFilter<SwaggerOperationFilter>();
+            });
+        }
+
+        class SwaggerOperationFilter : IOperationFilter
+        {
+            public void Apply(OpenApiOperation operation, OperationFilterContext context)
+            {
+                // swagger default req 설정되도록 함.
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme,  Id = "Default" }
+                };
+/*                    var opsSecurityScheme = new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Ops" }
+                };
+*/
+                operation.Security = new List<OpenApiSecurityRequirement>
+                {
+                    new()
+                    {
+                        { securityScheme, new List<string>() }
+                    },
+/*                        new()
+                    {
+                        { opsSecurityScheme, new List<string>() }
+                    }*/
+                };
+            }
+        }
     }
 }
