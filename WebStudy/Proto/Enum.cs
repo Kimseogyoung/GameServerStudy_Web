@@ -17,13 +17,6 @@ namespace Proto
         PROCESSED = 102, //이미 처리된 요청
         CANCELED_OPERATION = 103,
     }
-
-    public enum ERpcContextState
-    {
-        NONE = 0,
-        LOADED = 1,
-    }
-
     public enum ESessionState
     {
         NONE = 0,

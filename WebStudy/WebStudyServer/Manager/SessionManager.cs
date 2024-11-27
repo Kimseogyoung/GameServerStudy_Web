@@ -29,5 +29,39 @@ namespace WebStudyServer.Manager
             _authRepo.RpcContext.SetSessionKey(sessionKey);
         }
 
+
+        public bool IsExpire()
+        {
+            return Model.State != ESessionState.ACTIVE;
+        }
+
+        public void Extend()
+        {
+            if (Model.State == ESessionState.EXPIRED)
+            {
+                return;
+            }
+
+            // TODO: 연장
+            //
+        }
+/*
+        private void RefreshState()
+        {
+            var expireTime = TimeHelper.TimeStampToDateTime(Model.ExpireTimestamp);
+            var serverTime = _authRepo.RpcContext.ServerTime;
+
+            var isExpire = serverTime > expireTime;
+            var aftState = isExpire ? ESessionState.EXPIRED : ESessionState.ACTIVE;
+
+            if (Model.State == aftState)
+            {
+                return;
+            }
+
+            Model.State = aftState;
+            _authRepo.UpdateSession(Model);
+        }*/
+
     }
 }
