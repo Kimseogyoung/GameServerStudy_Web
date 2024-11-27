@@ -16,6 +16,8 @@ namespace WebStudyServer
         public string ServerIp { get; private set; } = string.Empty;
         public string EnvName { get; private set; } = string.Empty;
         public bool UseSwagger { get; private set; }
+        public bool UseUserLock { get; private set; }
+        public TimeSpan UserLockTimeoutSpan { get; private set; } = new();
         public MySqlServerVersion? DbVersion { get; private set; }
         public List<string> UserDbConnectionStrList { get; private set; } = new();
         public List<string> AuthDbConnectionStrList { get; private set; } = new();
@@ -31,6 +33,8 @@ namespace WebStudyServer
             EnvName = environ.EnvironmentName;
 
             UseSwagger = config.GetValue("UseSwagger", false);
+            UseUserLock = config.GetValue("UseUserLock", false);
+            UserLockTimeoutSpan = config.GetValue("UserLockTimeoutSpan", TimeSpan.FromMinutes(20));
 
             SessionExpireSpan = config.GetValue("SessionExpireSpan", TimeSpan.FromMinutes(20));
 

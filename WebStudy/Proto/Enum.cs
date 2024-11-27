@@ -16,6 +16,8 @@ namespace Proto
         TIMEOUT = 101,
         PROCESSED = 102, //이미 처리된 요청
         CANCELED_OPERATION = 103,
+
+        USER_LOCK = 104,
     }
     public enum ESessionState
     {

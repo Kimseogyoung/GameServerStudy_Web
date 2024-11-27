@@ -35,7 +35,6 @@
   <ItemGroup>
     <Folder Include="Data\Config\" />
     <Folder Include="DbContext\Legacy\" />
-    <Folder Include="Service\Singleton\" />
   </ItemGroup>
 
   <ItemGroup>

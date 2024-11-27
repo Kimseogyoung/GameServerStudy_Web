@@ -20,6 +20,12 @@ namespace WebStudyServer.Repo
             RpcContext = rpcContext;
         }
 
+        public static AuthRepo CreateInstance(RpcContext rpcContext)
+        {
+            var authRepo = new AuthRepo(rpcContext);
+            return authRepo;
+        }
+
         #region
         public AccountModel CreateAccount(AccountModel newAccount)
         {

@@ -39,6 +39,7 @@ namespace WebStudyServer
         private void AddServices(IServiceCollection services)
         {
             services.AddScoped<ErrorHandler>();
+            services.AddScoped<UserLockService>();
 
             services.AddScoped<AuthService>();
 

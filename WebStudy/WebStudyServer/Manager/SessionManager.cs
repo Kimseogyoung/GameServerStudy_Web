@@ -35,15 +35,26 @@ namespace WebStudyServer.Manager
             return Model.State != ESessionState.ACTIVE;
         }
 
-        public void Extend()
+        public bool Extend()
         {
             if (Model.State == ESessionState.EXPIRED)
             {
-                return;
+                return false;
+            }
+
+            var expireTime = TimeHelper.TimeStampToDateTime(Model.ExpireTimestamp);
+            var serverTime = _authRepo.RpcContext.ServerTime;
+
+            var isExpire = serverTime > expireTime;
+            if (!isExpire)
+            {
+                return false;
             }
 
             // TODO: 연장
             //
+
+            return true;
         }
 /*
         private void RefreshState()

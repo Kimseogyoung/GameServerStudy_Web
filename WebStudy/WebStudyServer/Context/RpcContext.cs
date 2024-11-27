@@ -94,8 +94,8 @@ namespace WebStudyServer
             // TODO: 점검 상태일때 세션 만료
             //
 
-            var authRepo = httpContext.RequestServices.GetRequiredService<AuthRepo>();
-            var sessionComp = httpContext.RequestServices.GetRequiredService<SessionComponent>();
+            var authRepo = AuthRepo.CreateInstance(this);
+            var sessionComp = SessionComponent.CreateInstance(authRepo);
             authRepo.Init(0);
 
             if (!sessionComp.TryGetByKey(sessionKey, out var mgrSession))
@@ -104,7 +104,7 @@ namespace WebStudyServer
                 return;
             }
 
-            mgrSession.Extend();
+            var isUpdate = mgrSession.Extend();
 
             if (mgrSession.IsExpire())
             {
@@ -115,6 +115,11 @@ namespace WebStudyServer
             SetPlayerId(mgrSession.Model.PlayerId);
             SetAccountId(mgrSession.Model.AccountId);
             SetShardId(mgrSession.Model.ShardId);
+
+            if (isUpdate)
+            {
+                authRepo.Commit();
+            }
         }
 
         // 요청 정보

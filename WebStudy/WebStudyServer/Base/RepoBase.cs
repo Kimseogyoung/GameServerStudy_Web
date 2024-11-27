@@ -1,4 +1,10 @@
-﻿using WebStudyServer.Repo.Database;
+﻿using MySqlConnector;
+using System.Data;
+using System.Security.Principal;
+using WebStudyServer.Extension;
+using WebStudyServer.Model.Auth;
+using WebStudyServer.Repo.Database;
+using System.Data.Common;
 
 namespace WebStudyServer.Base
 {
@@ -25,6 +31,24 @@ namespace WebStudyServer.Base
         public void Rollback()
         {
             _executor.Rollback();
+        }
+
+        public T RunCommand<T>(string commandText, params MySqlParameter[] parameters)
+        {
+            return _executor.Excute((sqlConnection, transaction) =>
+            {
+                using var command = sqlConnection.CreateCommand();
+                command.CommandType = CommandType.Text;
+                command.CommandText = commandText;
+
+                // 파라미터 추가
+                foreach (var parameter in parameters)
+                {
+                    command.Parameters.Add(parameter);
+                }
+
+                return (T)command.ExecuteScalar();
+            });
         }
 
         private string GetDbConnectionStr()

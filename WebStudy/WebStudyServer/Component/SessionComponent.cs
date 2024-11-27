@@ -9,6 +9,11 @@ namespace WebStudyServer.Component
 {
     public class SessionComponent : AuthComponentBase
     {
+        public static SessionComponent CreateInstance(AuthRepo authRepo)
+        {
+            return new SessionComponent(authRepo);
+        }
+
         public SessionComponent(AuthRepo authRepo) : base(authRepo)
         {
         }
