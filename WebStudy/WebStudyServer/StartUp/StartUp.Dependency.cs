@@ -34,6 +34,7 @@ namespace WebStudyServer
         {
             services.AddScoped<LogFilter>();
             services.AddScoped<AuthTransactionFilter>();
+            services.AddScoped<UserTransactionFilter>();
         }
 
         private void AddServices(IServiceCollection services)

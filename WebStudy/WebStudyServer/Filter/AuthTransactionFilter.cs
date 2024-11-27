@@ -5,7 +5,7 @@ namespace WebStudyServer.Filter
 {
     public class AuthTransactionFilter : ActionFilterAttribute
     {
-        public AuthTransactionFilter(RpcContext rpcContext, AuthRepo authRepo, ILogger<AuthTransactionFilter> logger)
+        public AuthTransactionFilter(RpcContext rpcContext, AuthRepo authRepo, UserLockService userLockService, ILogger<AuthTransactionFilter> logger)
         {
             _rpcContext = rpcContext;
             _authRepo = authRepo;
@@ -16,14 +16,14 @@ namespace WebStudyServer.Filter
         {
             _authRepo.Init(_rpcContext.ShardId);
 
-            // TODO: UserLock
-            //
-
-
-            var executedContext = await next(); // 실제 API Action
+            ActionExecutedContext executedContext = null;
+            await _userLockService.RunAtomicAsync(_rpcContext.AccountId, async () =>
+            {
+                executedContext = await next(); // 실제 API Action
+            });
 
             // API 실행 이후 
-            if (executedContext.Exception != null)
+            if (executedContext == null || executedContext.Exception != null)
             {
                 // 롤백
                 _authRepo.Rollback();
@@ -36,6 +36,7 @@ namespace WebStudyServer.Filter
 
         private readonly RpcContext _rpcContext;
         private readonly AuthRepo _authRepo;
+        private readonly UserLockService _userLockService;
         private readonly ILogger _logger;
     }
 }
