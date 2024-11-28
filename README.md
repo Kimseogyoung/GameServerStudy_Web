@@ -7,6 +7,7 @@ ASP.Net GameServer Study
 메모
 TODO 
 - cmd창에서 간이 클라이언트로 동작하도록 툴 만들기
+- Protocol 자동 생성 솔루션 적용 (1순위 : ProtoBuf, 2순위 : MsgPack)
 - Enum, Proto 제너레이터
 - DB 스키마 관리
 - 에러 리포트 시스템 구축
