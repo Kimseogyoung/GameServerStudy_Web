@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ClassGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "--inputPath \"..\\..\\Csv\\Packet\" --outputPath \".\\Data\""
+    }
+  }
+}

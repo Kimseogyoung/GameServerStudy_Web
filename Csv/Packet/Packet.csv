@@ -1,0 +1,15 @@
+ClassInfo,Class,Name,Type,Idx,Desc,ProtocolName
+#,#,,,,,
+#ReqInfo,,,,,,
+reqInfo,ReqInfo,Seq,long,1,,
+#ResInfo,,,,,,
+resInfo,ResInfo,ResultCode,int,1,,
+,ResInfo,ResultMsg,string,2,,
+#AuthSignUpReq,,,,,,
+req,AuthSignUpReq,DeviceKey,string,2,,auth/sign-up
+#AuthSignUpRes,,,,,,
+res,AuthSignUpRes,SessionKey,string,2,,
+#AuthSignInReq,,,,,,
+req,AuthSignInReq,ChannelId,string,2,,auth/sign-in
+#AuthSignInRes,,,,,,
+res,AuthSignInRes,SessionKey,string,2,,
