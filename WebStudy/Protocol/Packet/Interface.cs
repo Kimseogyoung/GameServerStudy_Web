@@ -14,6 +14,6 @@ namespace Protocol
 
     public interface IResPacket
     {
-        public ResInfoPacket Info { get; set; }
+        public ResInfoPacket Info { get; set; } 
     }
 }

@@ -7,7 +7,7 @@ namespace Protocol
 	{
     {{ for field in Fields }}
     {{field.Attribute}}
-    public {{field.Type}} {{field.Name}} { get; set; }
+    public {{field.Type}} {{field.Name}} { get; set; } {{field.Value}}
     {{ end }}
         public string GetProtocolName() => "{{ProtocolName}}";
 	}

@@ -48,10 +48,10 @@ namespace WebStudyServer
 
             var res = new ErrorResponsePacket
             {
-                Result = new ResponseResultPacket
+                Info = new ResInfoPacket
                 {
-                    Code = errorCode,
-                    Msg = errorMsg,
+                    ResultCode = errorCode,
+                    ResultMsg = errorMsg,
                 }
             };
             return ResWriteHelper.WriteResponseBodyAsync(httpContext, res, typeof(ErrorResponsePacket), StatusCodes.Status500InternalServerError);

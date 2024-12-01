@@ -120,12 +120,12 @@ namespace ClassGenerator
                         template = _reqPakTemplate;
                         classAttribute = "[ProtoContract]";
                         protocolName = firstDef.ProtocolName;
-                        defList.Insert(0, new ClassDefinition { FieldName = "Info", FieldType = "ReqInfoPacket", Idx = 1 });
+                        defList.Insert(0, new ClassDefinition { FieldName = "Info", FieldType = "ReqInfoPacket", Idx = 1 , FieldValue = ""});
                         break;
                     case "res":
                         template = _resPakTemplate;
                         classAttribute = "[ProtoContract]";
-                        defList.Insert(0, new ClassDefinition { FieldName = "Info", FieldType = "ResInfoPacket", Idx = 1 });
+                        defList.Insert(0, new ClassDefinition { FieldName = "Info", FieldType = "ResInfoPacket", Idx = 1 , FieldValue = "= new();" });
                         break;
                     default:
                         template = _pakTemplate;
@@ -140,7 +140,8 @@ namespace ClassGenerator
                     fields[i] = new Dictionary<string, object> {
                         {"Type",  defList[i].FieldType },
                         {"Name",  defList[i].FieldName },
-                        { "Attribute",  attribute } 
+                        { "Attribute",  attribute },
+                         {"Value",  defList[i].FieldValue},
                     };
 
                 }
@@ -191,6 +192,7 @@ namespace ClassGenerator
         public string ClassName { get; set; }
         public string FieldName { get; set; }
         public string FieldType { get; set; }
+        public string FieldValue { get; set; }
         public int Idx { get; set; }
         public string Description { get; set; }
         public string ProtocolName { get; set; }

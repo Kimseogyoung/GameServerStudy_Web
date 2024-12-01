@@ -7,10 +7,10 @@ namespace Protocol
 	{
     
         [ProtoMember(1)]
-        public ReqInfoPacket Info { get; set; }
+        public ReqInfoPacket Info { get; set; } 
         
         [ProtoMember(2)]
-        public string DeviceKey { get; set; }
+        public string DeviceKey { get; set; } 
         
         public string GetProtocolName() => "auth/sign-up";
 	}
