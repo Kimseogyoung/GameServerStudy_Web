@@ -132,7 +132,7 @@ namespace ClassGenerator
                         break;
                 }
 
-                var parsedTemplate = Template.Parse(_pakTemplate);
+                var parsedTemplate = Template.Parse(template);
                 var fields = new dynamic[defList.Count];
                 for (var i =0; i< defList.Count; i++)
                 {
@@ -155,6 +155,19 @@ namespace ClassGenerator
                 };
 
                 var result = parsedTemplate.Render(scriptObject);
+
+                var fileName = $"{classNameWithPak}.generated.cs";
+                var outputFilePath = Path.GetFullPath(Path.Join(output, fileName));
+                // 디렉토리 경로를 추출
+                var directoryPath = Path.GetDirectoryName(outputFilePath);
+
+                // 디렉토리가 없으면 생성
+                if (!string.IsNullOrEmpty(directoryPath) && !Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                File.WriteAllText(outputFilePath, result);
             }
         }
 

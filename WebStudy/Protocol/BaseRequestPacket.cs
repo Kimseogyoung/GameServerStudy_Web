@@ -1,10 +1,5 @@
 ﻿namespace Protocol
 {
-    public interface IReqPacket
-    {
-        public string GetProtocolName();
-    }
-
     public abstract class BaseRequestPacket
     {
         public abstract string GetProtocolName();

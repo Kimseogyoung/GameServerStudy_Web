@@ -29,6 +29,9 @@ namespace WebStudyServer
                         };
                         outputFormatter = new SystemTextJsonOutputFormatter(jsonOptions);
                         break;
+                    case MsgProtocol.ProtoBufContentType:
+                        outputFormatter = new ProtoBufOutputFormatter();
+                        break;
                     default:
                         _logger.Error("NOT_SUPPORT_OUTPUT_PROTOCOL MsgProtocol({MsgProtocol})", contentType);
                         continue;

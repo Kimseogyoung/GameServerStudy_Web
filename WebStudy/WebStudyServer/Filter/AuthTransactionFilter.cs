@@ -9,6 +9,7 @@ namespace WebStudyServer.Filter
         {
             _rpcContext = rpcContext;
             _authRepo = authRepo;
+            _userLockService = userLockService;
             _logger = logger;
         }
 

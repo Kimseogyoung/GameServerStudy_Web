@@ -1,9 +1,14 @@
-{{ClassAttribute}}
-public class {{ClassName}}
+using ProtoBuf;
+
+namespace Protocol
 {
+	{{ClassAttribute}}
+	public partial class {{ClassName}} : IReqPacket
+	{
     {{ for field in Fields }}
-        {{field.Attribute}}
-        public {{field.Type}} {{field.Name}} { get; set; }
+    {{field.Attribute}}
+    public {{field.Type}} {{field.Name}} { get; set; }
     {{ end }}
-        public string GetProtocolName() => "{{ProtocolName}};
+        public string GetProtocolName() => "{{ProtocolName}}";
+	}
 }

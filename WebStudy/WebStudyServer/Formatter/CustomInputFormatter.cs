@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using NLog;
 using Protocol;
 using System.Text;
-
+using ProtoBuf.AspNetCore;
 namespace WebStudyServer
 {
     public class CustomInputFormatter : TextInputFormatter
@@ -20,6 +20,9 @@ namespace WebStudyServer
 
                         var jsonOptions = new JsonOptions();
                         inputFormatter = new SystemTextJsonInputFormatter(jsonOptions, jsonLogger);
+                        break;
+                    case MsgProtocol.ProtoBufContentType:
+                        inputFormatter = new ProtoBufInputFormatter();
                         break;
                     default:
                         _logger.Error("NOT_SUPPORT_INPUT_PROTOCOL MsgProtocol({MsgProtocol})", contentType);
