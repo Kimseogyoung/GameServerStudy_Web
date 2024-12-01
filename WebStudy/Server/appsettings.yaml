@@ -5,7 +5,7 @@ SessionExpireSpan: 00:20:00
 IsShowErrorDetail: true
 UseStrictValidation: true
 Protocol:
-    ForceContentType: application/json
+    ForceContentType: application/protobuf
 Logging:
     LogFolder: ../logs
     LogLevel:

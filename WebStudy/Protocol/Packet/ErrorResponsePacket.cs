@@ -11,6 +11,6 @@ namespace Protocol
     public class ErrorResponsePacket : IResPacket
     {
         [ProtoMember(1)]
-        public ResInfoPacket Info { get; set; }
+        public ResInfoPacket Info { get; set; } = new();
     }
 }

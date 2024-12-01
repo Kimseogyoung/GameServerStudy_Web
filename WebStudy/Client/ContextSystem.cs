@@ -13,7 +13,7 @@ namespace Client
         public void Init()
         {
             _rpcSystem = new RpcSystem();
-            _rpcSystem.Init("http://localhost:5157", MsgProtocol.JsonContentType);
+            _rpcSystem.Init("http://localhost:5157", MsgProtocol.ProtoBufContentType);
         }
 
         public void Clear()

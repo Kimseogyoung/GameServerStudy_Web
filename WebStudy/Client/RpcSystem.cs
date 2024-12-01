@@ -48,12 +48,13 @@ namespace Client
 
             // POST 요청 보내기
             var response = await _httpClient.PostAsync(url, content);
+            var resContentType = response.Content.Headers.ContentType.MediaType.ToString();
 
             // 응답 처리
             if (response.IsSuccessStatusCode)
             {
                 string responseData = await response.Content.ReadAsStringAsync();
-                var res = Deserialize<RES>(responseData);
+                var res = Deserialize<RES>(resContentType, responseData);
                 Console.WriteLine("응답: " + responseData);
                 return res;
             }
@@ -62,7 +63,7 @@ namespace Client
                 // TODO: 예외처리
                 Console.WriteLine($"에러: {response.StatusCode}");
                 string responseData = await response.Content.ReadAsStringAsync();
-                var errorRes = Deserialize<ErrorResponsePacket>(responseData);
+                var errorRes = Deserialize<ErrorResponsePacket>(resContentType, responseData);
                 var res = new RES();
                 res.Info = errorRes.Info;
                 return res;
@@ -91,12 +92,12 @@ namespace Client
             return string.Empty;
         }
 
-        private RES Deserialize<RES>(string data) where RES : IResPacket, new()
+        private RES Deserialize<RES>(string contentType, string data) where RES : IResPacket, new()
         {
             var res = new RES();
             res.Info.ResultCode = (int)EErrorCode.NO_HANDLING_ERROR;
             res.Info.ResultMsg = "FAILED_DESERIALIZE";
-            switch (_contentType)
+            switch (contentType)
             {
                 case MsgProtocol.JsonContentType:
                     res = JsonSerializer.Deserialize<RES>(data);

@@ -47,7 +47,7 @@ namespace WebStudyServer
 
             IsShowErrorDetail = config.GetValue("IsShowErrorDetail", false);
             UseStrictValidation = config.GetValue("UseStrictValidation", true);
-            ForceContentType = config.GetValue("ForceContentType", MsgProtocol.JsonContentType);
+            ForceContentType = config.GetValue("Protocol:ForceContentType", MsgProtocol.JsonContentType);
         }
 
         private string GetServerIp()
