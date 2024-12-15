@@ -4,7 +4,6 @@ using System.Data;
 using System.Reflection;
 using System.Text;
 using WebStudyServer.Model;
-using WebStudyServer.Model.Auth;
 
 namespace WebStudyServer.Extension
 {
@@ -82,14 +81,10 @@ namespace WebStudyServer.Extension
             return connection.QuerySingleOrDefault<T>(selectSql, keyValues, transaction);
         }
 
-        public static T SelectByConditions<T>(this IDbConnection connection,object keyValues, IDbTransaction transaction)
+        public static T SelectByConditions<T>(this IDbConnection connection, object keyValues, IDbTransaction transaction)
         {
             var tableName = GetTableName<T>();
             var queryParam = GetQueryParameter<T>();
-            var whereClause = GetWhereClause<T>();
-
-            string selectSql = $@"SELECT * FROM {tableName} WHERE {whereClause};";
-
             var queryBuilder = new StringBuilder();
 
             // 기본 쿼리

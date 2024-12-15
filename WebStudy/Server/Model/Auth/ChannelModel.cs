@@ -1,7 +1,7 @@
 ﻿
 using Proto;
 
-namespace WebStudyServer.Model.Auth
+namespace WebStudyServer.Model
 {
     public class ChannelModel : ModelBase
     {

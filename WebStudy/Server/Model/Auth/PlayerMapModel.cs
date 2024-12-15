@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WebStudyServer.Model;
 
-namespace WebStudyServer.Model.Auth
+namespace WebStudyServer
 {
     public class PlayerMapModel : ModelBase
     {

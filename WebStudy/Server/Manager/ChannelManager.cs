@@ -1,4 +1,4 @@
-﻿using WebStudyServer.Model.Auth;
+﻿using WebStudyServer.Model;
 using WebStudyServer.Repo;
 
 namespace WebStudyServer.Manager

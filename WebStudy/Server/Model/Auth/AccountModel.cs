@@ -3,7 +3,7 @@ using Proto;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebStudyServer.Model.Auth
+namespace WebStudyServer.Model
 {
     public class AccountModel : ModelBase
     {

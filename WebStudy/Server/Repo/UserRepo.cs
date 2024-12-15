@@ -1,6 +1,7 @@
 ﻿using WebStudyServer.Base;
+using WebStudyServer.Extension;
 using WebStudyServer.GAME;
-using WebStudyServer.Repo.Database;
+using WebStudyServer.Model;
 
 namespace WebStudyServer.Repo
 {
@@ -12,5 +13,57 @@ namespace WebStudyServer.Repo
         {
             RpcContext = rpcContext;
         }
+
+        public static UserRepo CreateInstance(RpcContext rpcContext)
+        {
+            var userRepo = new UserRepo(rpcContext);
+            return userRepo;
+        }
+
+        #region
+        public PlayerModel CreatePlayer(PlayerModel newPlayer)
+        {
+            // 데이터베이스에 삽입
+            _executor.Excute((sqlConnection, transaction) =>
+            {
+                newPlayer = sqlConnection.Insert<PlayerModel>(newPlayer, transaction);
+            });
+
+            return newPlayer; // 새로 생성된 플레이어 모델 반환
+        }
+
+        public bool TryGetPlayerByAccountId(ulong accountId, out PlayerModel outPlayer)
+        {
+            PlayerModel mdlPlayer = null;
+
+            _executor.Excute((sqlConnection, transaction) =>
+            {
+                mdlPlayer = sqlConnection.SelectByPk<PlayerModel>(new { AccountId = accountId }, transaction);
+            });
+
+            outPlayer = mdlPlayer;
+            return outPlayer != null;
+        }
+
+        public PlayerModel GetPlayer(ulong id)
+        {
+            PlayerModel mdlPlayer = null;
+
+            _executor.Excute((sqlConnection, transaction) =>
+            {
+                mdlPlayer = sqlConnection.SelectByPk<PlayerModel>(new { Id = id }, transaction);
+            });
+
+            return mdlPlayer;
+        }
+
+        public void UpdatePlayer(PlayerModel mdlPlayer)
+        {
+            _executor.Excute((sqlConnection, transaction) =>
+            {
+                sqlConnection.Update(mdlPlayer, transaction);
+            });
+        }
+        #endregion
     }
 }

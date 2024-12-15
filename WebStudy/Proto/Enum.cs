@@ -49,4 +49,10 @@ namespace Proto
         NONE = 0,
         ACTIVE = 1
     }
+
+    public enum EPlayerState
+    {
+        NONE = 0,
+        PREPARED = 1
+    }
 }

@@ -1,6 +1,6 @@
 ﻿using WebStudyServer.Base;
 using WebStudyServer.Manager;
-using WebStudyServer.Model.Auth;
+using WebStudyServer.Model;
 using WebStudyServer.Repo;
 
 namespace WebStudyServer.Component

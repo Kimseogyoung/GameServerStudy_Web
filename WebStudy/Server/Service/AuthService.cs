@@ -8,9 +8,8 @@ namespace WebStudyServer.Service
 {
     public class AuthService : ServiceBase
     {
-        public AuthService(AuthRepo authRepo, AuthComponent authComp, RpcContext rpcContext, ILogger<AuthService> logger) :base(rpcContext, logger) 
+        public AuthService(AuthComponent authComp, RpcContext rpcContext, ILogger<AuthService> logger) :base(rpcContext, logger) 
         {
-            _authRepo = authRepo;// 임시
             _authComp = authComp;
         }
 
@@ -76,7 +75,6 @@ namespace WebStudyServer.Service
             return null;
         }
 
-        private readonly AuthRepo _authRepo;
         private readonly AuthComponent _authComp;
     }
 }

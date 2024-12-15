@@ -4,7 +4,7 @@ using System.Threading.Channels;
 using WebStudyServer.Base;
 using WebStudyServer.Extension;
 using WebStudyServer.GAME;
-using WebStudyServer.Model.Auth;
+using WebStudyServer.Model;
 
 namespace WebStudyServer.Repo
 {
@@ -14,8 +14,8 @@ namespace WebStudyServer.Repo
         protected override List<string> _dbConnStrList => APP.Cfg.AuthDbConnectionStrList;
         public AuthRepo(RpcContext rpcContext)
         {
-            //TODO: 적당한 위치에서 Init하기
-            Init(rpcContext.ShardId);
+            //Transation Filter에서 Init중
+            //Init(rpcContext.ShardId);
 
             RpcContext = rpcContext;
         }
@@ -26,7 +26,7 @@ namespace WebStudyServer.Repo
             return authRepo;
         }
 
-        #region
+        #region ACCOUNT
         public AccountModel CreateAccount(AccountModel newAccount)
         {
             // 데이터베이스에 삽입
