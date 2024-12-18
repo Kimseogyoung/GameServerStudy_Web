@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Protocol;
+using Server.Service;
 using WebStudyServer.Filter;
 using WebStudyServer.Service;
 
@@ -8,37 +9,36 @@ namespace WebStudyServer.Controllers
     [ApiController]
     [Route("game")]
     [ServiceFilter(typeof(LogFilter))]
-    [ServiceFilter(typeof(AuthTransactionFilter))]
+    [ServiceFilter(typeof(UserTransactionFilter))]
     public class GameController : ControllerBase
     {
-        public GameController(AuthService authService, ILogger<AuthController> logger)
+        public GameController(GameService gameService, ILogger<GameController> logger)
         {
-            _authService = authService;
+            _gameService = gameService;
             _logger = logger;
         }
 
-        [HttpPost("sign-up")]
-        public ActionResult<AuthSignUpResPacket> SignUp(AuthSignUpReqPacket req)
+        [HttpPost("enter")]
+        public ActionResult<GameEnterResPacket> Enter(GameEnterReqPacket req)
         {
-            var result = _authService.SignUp(req.DeviceKey);
+            var result = _gameService.Enter();
 
-            return new AuthSignUpResPacket
+            return new GameEnterResPacket
             {
-                SessionKey = result.SessionKey
             };
         }
 
-        [HttpPost("sign-in")]
-        public ActionResult<AuthSignInResPacket> SignIn(AuthSignInReqPacket req)
+        [HttpPost("change-name")]
+        public ActionResult<GameChangeNameResPacket> ChangeName(GameChangeNameReqPacket req)
         {
-            var result = _authService.SignIn(req.ChannelId);
-            return new AuthSignInResPacket
+            var resultName = _gameService.ChangeNameFirst(req.PlayerName);
+            return new GameChangeNameResPacket
             {
-                SessionKey = result.SessionKey
+                PlayerName = resultName,
             };
         }
 
-        private readonly AuthService _authService;
+        private readonly GameService _gameService;
         private readonly ILogger _logger;
     }
 }

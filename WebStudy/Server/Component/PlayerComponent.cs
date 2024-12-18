@@ -8,22 +8,24 @@ namespace WebStudyServer.Component
 {
     public class PlayerComponent : UserComponentBase
     {
-        public PlayerComponent(UserRepo userRepo) : base(userRepo)
+        public PlayerComponent(AuthRepo authRepo, UserRepo userRepo) : base(userRepo)
         {
+            _authRepo = authRepo;
+            _authRepo.Init(0); // TODO: 개선
         }
 
-        public bool TryCreatePlayer(out PlayerManager mgrPlayer)
+        public PlayerManager TouchPlayer()
         {
             var playerId = _userRepo.RpcContext.PlayerId;
-            var isCreatePlayer = playerId == 0;
+            var accountId = _userRepo.RpcContext.AccountId;
 
             PlayerModel mdlPlayer = null;
-            if (isCreatePlayer)
+            if (playerId == 0)
             {
                 // 신규 플레이어 생성
                 mdlPlayer = _userRepo.CreatePlayer(new PlayerModel
                 {
-                    AccountId = _userRepo.RpcContext.AccountId,
+                    AccountId = accountId,
                     Lv = 1,
                     ProfileName = IdHelper.GenerateRandomName(), // TODO: 중복 닉네임 제한 하고싶음.
                 });
@@ -38,8 +40,21 @@ namespace WebStudyServer.Component
             if (mdlPlayer == null)
                 throw new Exception("NOT_FOUND_PLAYER"); // TODO:  오류 발생
 
-            mgrPlayer = new PlayerManager(_userRepo, mdlPlayer);
-            return isCreatePlayer;
+            if (!_authRepo.TryGetPlayerMap(accountId, out _))
+            {
+                _authRepo.CreatePlayerMap(new PlayerMapModel
+                {
+                    AccountId = accountId,
+                    PlayerId = mdlPlayer.Id,
+                    ShardId = _userRepo.ShardId,
+                });
+                _authRepo.Commit(); // TODO: 개선
+            }
+
+            var mgrPlayer = new PlayerManager(_userRepo, mdlPlayer);
+            return mgrPlayer;
         }
+
+        private AuthRepo _authRepo;
     }
 }

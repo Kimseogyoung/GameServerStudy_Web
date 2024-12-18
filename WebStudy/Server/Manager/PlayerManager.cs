@@ -1,5 +1,7 @@
 ﻿using WebStudyServer.Repo;
 using WebStudyServer.Model;
+using Proto;
+using WebStudyServer.Helper;
 
 namespace WebStudyServer.Manager
 {
@@ -13,9 +15,20 @@ namespace WebStudyServer.Manager
 
         public void PreparePlayer()
         {
-            // Player 상태 확인 및 초기 세팅
+            // Player 초기 세팅
+            Model.State = Proto.EPlayerState.PREPARED;
+            _userRepo.UpdatePlayer(Model);
+        }
 
+        public void ValidState(EPlayerState state)
+        {
+            ReqHelper.ValidContext(Model.State < state, "ALREADY_PASSED_PLAYER_STATE", () => new { MdlState = Model.State, ValState = state });
+        }
 
+        public void ChangeName(string name)
+        {
+            Model.ProfileName = name;
+            _userRepo.UpdatePlayer(Model);
         }
     }
 }

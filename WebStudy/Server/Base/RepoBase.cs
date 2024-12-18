@@ -1,10 +1,6 @@
 ﻿using MySqlConnector;
 using System.Data;
-using System.Security.Principal;
-using WebStudyServer.Extension;
-using WebStudyServer.Model.Auth;
 using WebStudyServer.Repo.Database;
-using System.Data.Common;
 
 namespace WebStudyServer.Base
 {

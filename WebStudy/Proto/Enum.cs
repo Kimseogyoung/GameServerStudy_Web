@@ -18,6 +18,12 @@ namespace Proto
         CANCELED_OPERATION = 103,
 
         USER_LOCK = 104,
+
+        GAME_CHANGE_NAME_EXIST_NAME = 1001,
+
+        PARAM = 10000,
+        PROTO = 20000,
+        CONTEXT = 30000,
     }
     public enum ESessionState
     {
@@ -53,6 +59,7 @@ namespace Proto
     public enum EPlayerState
     {
         NONE = 0,
-        PREPARED = 1
+        PREPARED = 1,
+        CHANGED_NAME_FIRST = 2,
     }
 }

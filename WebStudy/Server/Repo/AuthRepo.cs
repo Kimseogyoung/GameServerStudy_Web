@@ -59,7 +59,7 @@ namespace WebStudyServer.Repo
         }
         #endregion
 
-        #region
+        #region DEVICE
         public DeviceModel CreateDevice(DeviceModel inChannel)
         {
             DeviceModel newDevice = null;
@@ -93,8 +93,7 @@ namespace WebStudyServer.Repo
         }
         #endregion
 
-
-        #region
+        #region CHANNEL
         public ChannelModel CreateChannel(ChannelModel inChannel)
         {
             ChannelModel newChannel = null;
@@ -141,8 +140,7 @@ namespace WebStudyServer.Repo
         }
         #endregion
 
-
-        #region
+        #region SESSION
         public SessionModel CreateSession(SessionModel inSession)
         {
             SessionModel newSession = null;
@@ -185,6 +183,33 @@ namespace WebStudyServer.Repo
             {
                 sqlConnection.Update(mdlSession, transaction);
             });
+        }
+        #endregion
+
+        #region PLAYER_MAP
+        public PlayerMapModel CreatePlayerMap(PlayerMapModel inPlayerMap)
+        {
+            PlayerMapModel newPlayerMap = null;
+            // 데이터베이스에 삽입
+            _executor.Excute((sqlConnection, transaction) =>
+            {
+                newPlayerMap = sqlConnection.Insert(inPlayerMap, transaction);
+            });
+
+            return newPlayerMap;
+        }
+
+        public bool TryGetPlayerMap(ulong accountId, out PlayerMapModel outPlayerMap)
+        {
+            PlayerMapModel playerMap = null;
+
+            _executor.Excute((sqlConnection, transaction) =>
+            {
+                playerMap = sqlConnection.SelectByPk<PlayerMapModel>(new { AccountId = accountId}, transaction);
+            });
+
+            outPlayerMap = playerMap;
+            return outPlayerMap != null;
         }
         #endregion
 

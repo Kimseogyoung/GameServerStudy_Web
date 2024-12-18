@@ -12,8 +12,7 @@ using WebStudyServer.Repo;
 using WebStudyServer.Repo.Database;
 using WebStudyServer.GAME;
 using WebStudyServer.Extension;
-using WebStudyServer.Model.Auth;
-using WebStudyServer.Model.User;
+using WebStudyServer.Model;
 
 namespace WebStudyServer
 {
@@ -24,6 +23,7 @@ namespace WebStudyServer
             services.AddMemoryCache();
             AddRepo<UserRepo>(services);
             AddRepo<AuthRepo>(services);
+            services.AddScoped<AllUserRepo>();
 
             DapperExtension.Init<AccountModel>("Id");
             DapperExtension.Init<ChannelModel>("Key");

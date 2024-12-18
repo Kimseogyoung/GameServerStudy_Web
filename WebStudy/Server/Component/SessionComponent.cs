@@ -67,15 +67,5 @@ namespace WebStudyServer.Component
             var mgrSession = new SessionManager(_authRepo, repoSession);
             return mgrSession;
         }
-
-        public SessionManager Touch2(ulong accountId)
-        {
-            var repoSession = new SessionModel
-            {
-                AccountId = 101,
-            };
-            var mgrSession = new SessionManager(_authRepo, repoSession);
-            return mgrSession;
-        }
     }
 }

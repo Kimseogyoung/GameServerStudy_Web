@@ -70,16 +70,27 @@ namespace ClassGenerator
                         continue;
                     }
 
-                    classDefinitionList.Add(new ClassDefinition
+                    var classInfo = values[0];
+                    if (!string.IsNullOrEmpty(classInfo))
                     {
-                        ClassInfo = values[0],
-                        ClassName = values[1],
-                        FieldName = values[2],
-                        FieldType = values[3],
-                        Idx = int.Parse(values[4]),
-                        Description = values[5],
-                        ProtocolName = values.Length > 6 ? values[6] : string.Empty
-                    });
+                        classDefinitionList.Add(new ClassDefinition
+                        {
+                            ClassInfo = classInfo,
+                            ClassName = values[1],
+                            ProtocolName = values.Length > 6 ? values[6] : string.Empty
+                        });
+                    }
+                    else
+                    {
+                        classDefinitionList.Add(new ClassDefinition
+                        {
+                            ClassName = values[1],
+                            FieldName = values[2],
+                            FieldType = values[3],
+                            Idx = int.Parse(values[4]),
+                            Description = values[5],
+                        });
+                    }
                 }
 
             }
@@ -104,6 +115,8 @@ namespace ClassGenerator
             {
                 if (!groupedClassDict.ContainsKey(definition.ClassName))
                     groupedClassDict[definition.ClassName] = new List<ClassDefinition>();
+
+
                 groupedClassDict[definition.ClassName].Add(definition);
             }
 
@@ -113,6 +126,8 @@ namespace ClassGenerator
                 var template = "";
                 var classAttribute = "[ProtoContract]";
                 var firstDef = defList.First();
+                defList.RemoveAt(0);
+
                 var protocolName = "";
                 switch (firstDef.ClassInfo)
                 {

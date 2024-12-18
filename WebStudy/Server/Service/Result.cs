@@ -22,4 +22,9 @@ namespace WebStudyServer.Service
         public string AccountEnv { get; set; }
         public EAccountState AccountState { get; set; }
     }
+
+    public class GameEnterResult
+    {
+        
+    }
 }

@@ -20,7 +20,7 @@ namespace WebStudyServer.Repo
             return userRepo;
         }
 
-        #region
+        #region Player
         public PlayerModel CreatePlayer(PlayerModel newPlayer)
         {
             // 데이터베이스에 삽입
