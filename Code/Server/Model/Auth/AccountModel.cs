@@ -18,5 +18,7 @@ namespace WebStudyServer.Model
         public int AdditionalPlayerCnt { get; set; }
 
         public ulong Flag { get; set; }
+
+        public int Age { get; set; }
     }
 }

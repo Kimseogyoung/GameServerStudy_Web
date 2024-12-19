@@ -282,3 +282,15 @@ databaseChangeLog:
                   type: DATETIME
                   constraints:
                     nullable: false
+  - changeSet:
+      id: add-account-age-column
+      author: seogyoung
+      changes:
+        - addColumn:
+            tableName: Account
+            columns:
+              - column:
+                  name: Age
+                  type: INT
+                  constraints:
+                    nullable: false
