@@ -21,8 +21,13 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: SfId
+                  type: BIGINT UNSIGNED
+                  constraints:
+                    nullable: false
+              - column:
                   name: ProfileName
-                  type: VARCHAR(255)
+                  type: VARCHAR(30)
                   constraints:
                     nullable: false
               - column:
