@@ -62,3 +62,81 @@ databaseChangeLog:
                   type: DATETIME
                   constraints:
                     nullable: false
+  - changeSet:
+      id: add-player-etc-column
+      author: seogyoung
+      changes:
+        - addColumn:
+            tableName: Player
+            columns:
+              - column:
+                  name: Exp
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: AccExp
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ProfileTitleNum
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ProfileIconNum
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ProfileFrameNum
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ProfileCookieNum
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: GuildId
+                  type: BIGINT UNSIGNED
+                  constraints:
+                    nullable: false
+              - column:
+                  name: KingdomExp
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: Gold
+                  type: DOUBLE 
+                  constraints:
+                    nullable: false
+              - column:
+                  name: AccGold
+                  type: DOUBLE 
+                  constraints:
+                    nullable: false
+              - column:
+                  name: RealCash
+                  type: DOUBLE 
+                  constraints:
+                    nullable: false
+              - column:
+                  name: FreeCash
+                  type: DOUBLE 
+                  constraints:
+                    nullable: false
+              - column:
+                  name: AccRealCash
+                  type: DOUBLE 
+                  constraints:
+                    nullable: false
+              - column:
+                  name: AccFreeCash
+                  type: DOUBLE 
+                  constraints:
+                    nullable: false
+              
